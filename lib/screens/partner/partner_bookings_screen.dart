@@ -93,7 +93,7 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
             final booking = _bookings[index];
             final isNew = booking['status'] == 'جديد';
             final isConfirmed = booking['status'] == 'مؤكد';
-            final isRejected = booking['status'] == 'مرفوض';
+
 
             return Container(
               margin: const EdgeInsets.only(bottom: 16),

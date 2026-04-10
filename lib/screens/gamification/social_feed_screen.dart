@@ -1,10 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../config/constants.dart';
 import '../../providers/feed_provider.dart';
 import '../../models/post_model.dart';
+import 'leaderboard_screen.dart';
 
 class SocialFeedScreen extends StatefulWidget {
   const SocialFeedScreen({super.key});
@@ -37,13 +37,23 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
         backgroundColor: AppConstants.backgroundDark,
         elevation: 0,
         title: Text(
-          'COMMUNITY',
+          'Community',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w800,
             fontSize: 22,
             letterSpacing: 1.5,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const LeaderboardScreen(),
+              ));
+            },
+            icon: const Icon(Icons.leaderboard_outlined, color: AppConstants.accentGold),
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: AppConstants.accentTeal,
@@ -242,8 +252,20 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
           ),
           // Photo
           AspectRatio(
-            aspectRatio: 1.2,
-            child: InteractiveViewer(child: Image.network(post.photoUrl, fit: BoxFit.cover, width: double.infinity)),
+            aspectRatio: 1.0,
+            child: post.photoUrl.isNotEmpty
+                ? InteractiveViewer(
+                    child: (post.photoUrl.startsWith('http') || post.photoUrl.startsWith('blob:'))
+                        ? Image.network(post.photoUrl, fit: BoxFit.cover, width: double.infinity)
+                        : Image.network(post.photoUrl, fit: BoxFit.cover, width: double.infinity, errorBuilder: (c, e, s) => const Icon(Icons.broken_image)),
+                  )
+                : Container(
+                    color: AppConstants.backgroundElevated,
+                    child: const Center(
+                      child: Icon(Icons.image_not_supported_outlined,
+                          color: AppConstants.textTertiary, size: 40),
+                    ),
+                  ),
           ),
           // Actions/Caption
           Padding(

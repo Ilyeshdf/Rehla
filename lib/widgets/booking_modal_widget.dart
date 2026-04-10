@@ -8,12 +8,14 @@ class BookingModalWidget extends StatefulWidget {
   final String placeName;
   final String category;
   final Function(Booking) onConfirm;
+  final String bookingType;
 
   const BookingModalWidget({
     super.key,
     required this.placeName,
     required this.category,
     required this.onConfirm,
+    this.bookingType = 'place',
   });
 
   @override
@@ -49,7 +51,9 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
               surface: AppConstants.backgroundCard,
               onSurface: AppConstants.textPrimary,
             ),
-            dialogBackgroundColor: AppConstants.backgroundCard,
+            dialogTheme: const DialogThemeData(
+              backgroundColor: AppConstants.backgroundCard,
+            ),
           ),
           child: child!,
         );
@@ -103,7 +107,7 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
                       color: AppConstants.accentTeal.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Icon(Icons.bookmark_add, color: AppConstants.accentTeal, size: 24),
+                    child: Icon(widget.bookingType == 'guide' ? Icons.explore : Icons.bookmark_add, color: AppConstants.accentTeal, size: 24),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -111,7 +115,7 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'RESERVE YOUR SPOT',
+                          widget.bookingType == 'guide' ? 'BOOK GUIDE' : 'RESERVE YOUR SPOT',
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -252,6 +256,7 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
                         phoneNumber: _phoneController.text,
                         date: _selectedDate,
                         numberOfGuests: _numberOfGuests,
+                        bookingType: widget.bookingType,
                       );
                       widget.onConfirm(booking);
                     }

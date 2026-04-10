@@ -1,0 +1,240 @@
+{
+  "wilayas": [
+    {
+      "id": "algiers",
+      "name": "الجزائر العاصمة",
+      "places": [
+        {
+          "id": "casbah",
+          "name": "القصبة",
+          "name_en": "Casbah of Algiers",
+          "category": "تراث",
+          "place_type": "public",
+          "description": "حي القصبة العتيق المصنف ضمن التراث العالمي لليونسكو",
+          "lat": 36.7853,
+          "lng": 3.0588,
+          "entry_price": 0,
+          "hours": "24/7",
+          "tip": "ارتدي أحذية مريحة للأزقة الضيقة"
+        },
+        {
+          "id": "jardin_essai",
+          "name": "حديقة التجارب",
+          "name_en": "Jardin d'Essai",
+          "category": "طبيعة",
+          "place_type": "wild",
+          "description": "حديقة نباتية تاريخية تضم أنواع نادرة من النباتات",
+          "lat": 36.7473,
+          "lng": 3.0747,
+          "entry_price": 100,
+          "hours": "08:00 - 17:00",
+          "tip": "أفضل وقت للزيارة في الصباح الباكر"
+        },
+        {
+          "id": "great_mosque",
+          "name": "الجامع الكبير",
+          "name_en": "Great Mosque of Algiers",
+          "category": "تراث",
+          "place_type": "public",
+          "description": "أحد أقدم المساجد في الجزائر يعود للقرن 11",
+          "lat": 36.7866,
+          "lng": 3.0607,
+          "entry_price": 0,
+          "hours": "خارج أوقات الصلاة",
+          "tip": "أفضل وقت للزيارة بعد صلاة المغرب"
+        },
+        {
+          "id": "bardo_museum",
+          "name": "متحف الباردو",
+          "name_en": "Bardo Museum",
+          "category": "تاريخ",
+          "place_type": "public",
+          "description": "متحف يحوي مجموعة غنية من القطع الأثرية والتحف",
+          "lat": 36.7686,
+          "lng": 3.0543,
+          "entry_price": 200,
+          "hours": "09:00 - 16:30",
+          "tip": "مغلق أيام الجمعة"
+        },
+        {
+          "id": "beach_jemila",
+          "name": "شاطئ الجميلة",
+          "name_en": "Jemila Beach",
+          "category": "شاطئ",
+          "place_type": "wild",
+          "description": "شاطئ رملي جميل في ضواحي العاصمة",
+          "lat": 36.8065,
+          "lng": 3.2529,
+          "entry_price": 0,
+          "hours": "06:00 - 20:00",
+          "tip": "تجنب أيام الأحد بسبب الازدحام"
+        },
+        {
+          "id": "hotel_aurassi",
+          "name": "فندق الأوراسي",
+          "name_en": "El Aurassi Hotel",
+          "category": "فندق",
+          "place_type": "comfortable",
+          "description": "فندق فاخر مع إطلالة بانورامية على خليج الجزائر",
+          "lat": 36.7520,
+          "lng": 3.0490,
+          "price_per_night": 15000,
+          "rating": 4.2,
+          "amenities": ["wifi", "pool", "restaurant", "parking"],
+          "has_booking": true
+        },
+        {
+          "id": "restaurant_dar_jeld",
+          "name": "مطعم دار الجلد",
+          "name_en": "Dar El Jeld Restaurant",
+          "category": "أكل",
+          "place_type": "comfortable",
+          "description": "مطعم جزائري تقليدي فاخر في قلب القصبة",
+          "lat": 36.7862,
+          "lng": 3.0601,
+          "avg_price": 3000,
+          "rating": 4.5,
+          "cuisine": "جزائري تقليدي",
+          "has_booking": true
+        },
+        {
+          "id": "restaurant_brasserie",
+          "name": "مطعم البراسري",
+          "name_en": "La Brasserie",
+          "category": "أكل",
+          "place_type": "comfortable",
+          "description": "مطعم بحري مع إطلالة رائعة على البحر",
+          "lat": 36.7596,
+          "lng": 3.0618,
+          "avg_price": 4000,
+          "rating": 4.3,
+          "cuisine": "بحري",
+          "has_booking": true
+        },
+        {
+          "id": "restaurant_tantonville",
+          "name": "مطعم لو تانتونفيل",
+          "name_en": "Le Tantonville",
+          "category": "أكل",
+          "place_type": "comfortable",
+          "description": "مطعم فاخر يقدم أطباق متوسطية وجزائرية",
+          "lat": 36.7543,
+          "lng": 3.0612,
+          "avg_price": 5000,
+          "rating": 4.6,
+          "cuisine": "متوسطي",
+          "has_booking": true
+        }
+      ],
+      "guides": [
+        {
+          "id": "g1",
+          "name": "يوسف أحمد",
+          "name_en": "Youssef Ahmed",
+          "languages": ["Arabic", "English"],
+          "rating": 4.9,
+          "phone": "0555123456",
+          "schedule": "Available daily",
+          "base_price": 2000,
+          "specialties": ["heritage", "history"]
+        },
+        {
+          "id": "g2",
+          "name": "أمينة علي",
+          "name_en": "Amina Ali",
+          "languages": ["Arabic", "French"],
+          "rating": 4.8,
+          "phone": "0555123457",
+          "schedule": "Weekends only",
+          "base_price": 2500,
+          "specialties": ["nature", "beach"]
+        }
+      ]
+    },
+    {
+      "id": "bejaia",
+      "name": "بجاية",
+      "places": [
+        {
+          "id": "cap_carbon",
+          "name": "رأس كربون",
+          "name_en": "Cap Carbon",
+          "category": "طبيعة",
+          "place_type": "wild",
+          "description": "منارة تاريخية على جرف صخري مطل على البحر المتوسط",
+          "lat": 36.7640,
+          "lng": 5.0930,
+          "entry_price": 0,
+          "hours": "06:00 - 18:00",
+          "tip": "رحلة مشي ممتعة لكن تحتاج حذاء جبلي"
+        },
+        {
+          "id": "gouraya_park",
+          "name": "الحظيرة الوطنية قوراية",
+          "name_en": "Gouraya National Park",
+          "category": "طبيعة",
+          "place_type": "wild",
+          "description": "حظيرة وطنية تضم غابات وقرود ومناظر خلابة",
+          "lat": 36.7580,
+          "lng": 5.0800,
+          "entry_price": 200,
+          "hours": "07:00 - 17:00",
+          "tip": "خذ مياه كافية ولا تطعم القرود"
+        },
+        {
+          "id": "beach_boulimat",
+          "name": "شاطئ بوليمات",
+          "name_en": "Boulimat Beach",
+          "category": "شاطئ",
+          "place_type": "wild",
+          "description": "شاطئ صخري خلاب محاط بالمنحدرات الخضراء",
+          "lat": 36.7318,
+          "lng": 5.0095,
+          "entry_price": 0,
+          "hours": "06:00 - 20:00",
+          "tip": "مكان مثالي للتصوير عند الغروب"
+        },
+        {
+          "id": "yemma_gouraya",
+          "name": "يما قوراية",
+          "name_en": "Yemma Gouraya",
+          "category": "تراث",
+          "place_type": "public",
+          "description": "قمة جبل قوراية مع ضريح تاريخي وإطلالة بانورامية",
+          "lat": 36.7650,
+          "lng": 5.0870,
+          "entry_price": 0,
+          "hours": "24/7",
+          "tip": "الصعود يستغرق حوالي ساعة ونصف"
+        },
+        {
+          "id": "hotel_les_hammadites",
+          "name": "فندق الحماديت",
+          "name_en": "Hotel Les Hammadites",
+          "category": "فندق",
+          "place_type": "comfortable",
+          "description": "فندق على شاطئ البحر مباشرة مع مسبح",
+          "lat": 36.7310,
+          "lng": 5.0100,
+          "price_per_night": 12000,
+          "rating": 4.0,
+          "amenities": ["wifi", "pool", "beach_access", "restaurant"],
+          "has_booking": true
+        }
+      ],
+      "guides": [
+        {
+          "id": "g3",
+          "name": "طارق بن زياد",
+          "name_en": "Tariq Ben Ziad",
+          "languages": ["Arabic", "Spanish"],
+          "rating": 4.7,
+          "phone": "0555123458",
+          "schedule": "Mornings only",
+          "base_price": 1800,
+          "specialties": ["mountain", "adventure"]
+        }
+      ]
+    }
+  ]
+}

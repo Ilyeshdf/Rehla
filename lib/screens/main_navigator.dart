@@ -1,11 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../config/constants.dart';
 import 'home_screen.dart';
 import 'gamification/social_feed_screen.dart';
-import 'gamification/leaderboard_screen.dart';
+
 import 'gamification/explorer_profile_screen.dart';
-import 'gamification/journey_tracker_screen.dart'; // We'll keep tracker but maybe wrap it in safety
+import 'gamification/journey_tracker_screen.dart'; 
+import '../providers/navigation_provider.dart';
+import 'package:provider/provider.dart';
 
 class MainNavigator extends StatefulWidget {
   const MainNavigator({super.key});
@@ -15,7 +18,7 @@ class MainNavigator extends StatefulWidget {
 }
 
 class _MainNavigatorState extends State<MainNavigator> {
-  int _currentIndex = 1; // Default to Planner
+  // Navigation is now managed via NavigationProvider
 
   final List<Widget> _screens = [
     const SocialFeedScreen(),
@@ -26,12 +29,14 @@ class _MainNavigatorState extends State<MainNavigator> {
 
   @override
   Widget build(BuildContext context) {
+    final nav = context.watch<NavigationProvider>();
+    
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: AppConstants.backgroundDark,
         body: IndexedStack(
-          index: _currentIndex,
+          index: nav.currentIndex,
           children: _screens,
         ),
         bottomNavigationBar: Container(
@@ -45,10 +50,10 @@ class _MainNavigatorState extends State<MainNavigator> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildNavItem(0, Icons.people_outline, Icons.people, 'Community'),
-                  _buildNavItem(1, Icons.auto_awesome_outlined, Icons.auto_awesome, 'AI Plan'),
-                  _buildNavItem(2, Icons.security_outlined, Icons.security, 'Safety'),
-                  _buildNavItem(3, Icons.person_outline, Icons.person, 'Profile'),
+                   _buildNavItem(0, Icons.explore_outlined, Icons.explore, 'FEED'),
+                   _buildNavItem(1, Icons.auto_awesome_outlined, Icons.auto_awesome, 'PLAN'),
+                   _buildNavItem(2, Icons.route_outlined, Icons.route, 'TRACK'),
+                   _buildNavItem(3, Icons.person_outline, Icons.person, 'PRO'),
                 ],
               ),
             ),
@@ -59,9 +64,10 @@ class _MainNavigatorState extends State<MainNavigator> {
   }
 
   Widget _buildNavItem(int index, IconData icon, IconData activeIcon, String label) {
-    final isSelected = _currentIndex == index;
+    final nav = context.read<NavigationProvider>();
+    final isSelected = nav.currentIndex == index;
     return GestureDetector(
-      onTap: () => setState(() => _currentIndex = index),
+      onTap: () => nav.setIndex(index),
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),

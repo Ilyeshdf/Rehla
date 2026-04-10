@@ -8,12 +8,14 @@ class QuizAnswers {
   String budget;
   List<String> interests;
   List<String> specialNeeds;
+  bool wantsGuide;
 
   QuizAnswers({
     this.destination = '',
     this.days = 3,
     this.travelerType = '',
     this.budget = '',
+    this.wantsGuide = false,
     List<String>? interests,
     List<String>? specialNeeds,
   })  : interests = interests ?? [],
@@ -36,6 +38,7 @@ class QuizAnswers {
     int? days,
     String? travelerType,
     String? budget,
+    bool? wantsGuide,
     List<String>? interests,
     List<String>? specialNeeds,
   }) {
@@ -44,6 +47,7 @@ class QuizAnswers {
       days: days ?? this.days,
       travelerType: travelerType ?? this.travelerType,
       budget: budget ?? this.budget,
+      wantsGuide: wantsGuide ?? this.wantsGuide,
       interests: interests ?? List.from(this.interests),
       specialNeeds: specialNeeds ?? List.from(this.specialNeeds),
     );
@@ -95,13 +99,18 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setWantsGuide(bool wants) {
+    _answers.wantsGuide = wants;
+    notifyListeners();
+  }
+
   void setStep(int step) {
     _currentStep = step;
     notifyListeners();
   }
 
   void nextStep() {
-    if (_currentStep < 5) {
+    if (_currentStep < 6) {
       _currentStep++;
       notifyListeners();
     }
@@ -134,6 +143,8 @@ class QuizProvider extends ChangeNotifier {
         return _answers.interests.isNotEmpty;
       case 5:
         return true; // Optional step
+      case 6:
+        return true; // Guide step
       default:
         return false;
     }

@@ -44,7 +44,7 @@ class QuizScreen extends StatelessWidget {
               preferredSize: const Size.fromHeight(4),
               child: ProgressBarWidget(
                 currentStep: quiz.currentStep,
-                totalSteps: 6,
+                totalSteps: 7,
               ),
             ),
           ),
@@ -83,7 +83,7 @@ class QuizScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    if (quiz.currentStep == 5)
+                    if (quiz.currentStep == 6)
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () => _navigateToLoading(context, quiz),
@@ -103,15 +103,15 @@ class QuizScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    if (quiz.currentStep == 5) const SizedBox(width: 16),
+                    if (quiz.currentStep == 6) const SizedBox(width: 16),
                     Expanded(
-                      flex: quiz.currentStep == 5 ? 2 : 1,
+                      flex: quiz.currentStep == 6 ? 2 : 1,
                       child: SizedBox(
                         height: 56,
                         child: ElevatedButton(
                           onPressed: quiz.isStepValid
                               ? () {
-                                  if (quiz.currentStep < 5) {
+                                  if (quiz.currentStep < 6) {
                                     quiz.nextStep();
                                   } else {
                                     _navigateToLoading(context, quiz);
@@ -134,7 +134,7 @@ class QuizScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                quiz.currentStep < 5 ? 'NEXT STEP' : 'REVEAL JOURNEY',
+                                quiz.currentStep < 6 ? 'NEXT STEP' : 'REVEAL JOURNEY',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,

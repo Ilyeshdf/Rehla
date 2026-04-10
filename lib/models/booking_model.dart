@@ -9,6 +9,8 @@ class Booking {
   final DateTime date;
   final int numberOfGuests;
   final String status;
+  final String? guideId;
+  final String bookingType;
 
   Booking({
     String? referenceNumber,
@@ -19,6 +21,8 @@ class Booking {
     required this.date,
     required this.numberOfGuests,
     this.status = 'جديد',
+    this.guideId,
+    this.bookingType = 'place',
   }) : referenceNumber = referenceNumber ?? _generateReference();
 
   static String _generateReference() {
@@ -32,7 +36,7 @@ class Booking {
     );
   }
 
-  Booking copyWith({String? status}) {
+  Booking copyWith({String? status, String? guideId, String? bookingType}) {
     return Booking(
       referenceNumber: referenceNumber,
       placeName: placeName,
@@ -42,6 +46,8 @@ class Booking {
       date: date,
       numberOfGuests: numberOfGuests,
       status: status ?? this.status,
+      guideId: guideId ?? this.guideId,
+      bookingType: bookingType ?? this.bookingType,
     );
   }
 }

@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/post_model.dart';
 
 class FeedProvider extends ChangeNotifier {
+  final _supabase = Supabase.instance.client;
   List<PostModel> _posts = [];
   bool _isLoading = true;
 
@@ -11,96 +11,120 @@ class FeedProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   FeedProvider() {
-    _loadPosts();
+    fetchPosts();
   }
 
-  Future<void> _loadPosts() async {
-    // Better, more reliable Unsplash URLs
-    _posts = [
-      PostModel(
-        id: '1',
-        userId: 'm1',
-        username: 'Yazid_19',
-        wilayaBadge: 'بجاية',
-        journeyId: 'j1',
-        photoUrl: 'https://images.unsplash.com/photo-1549880181-59a44fc0afdc?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Beautiful morning at Mount Yemma Gouraya! The view is breathtaking ⛰️🇩🇿 #Bejaia #Nature',
-        tags: ['#Bejaia', '#Nature'],
-        likes: 124,
-        comments: 18,
-        isLiked: false,
-        createdAt: DateTime.now().subtract(const Duration(hours: 2)),
-        achievementBadge: '⛰️ Climber',
-        distanceKm: 8.5,
-        time: const Duration(hours: 3, minutes: 20),
-        difficulty: 'Hard',
-      ),
-      PostModel(
-        id: '2',
-        userId: 'm2',
-        username: 'Amira_Dz',
-        wilayaBadge: 'Algiers',
-        journeyId: 'j2',
-        photoUrl: 'https://images.unsplash.com/photo-1523211711685-610118679093?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Walking through Casbah historic streets. History in every corner ✨ #Casbah',
-        tags: ['#History'],
-        likes: 342,
-        comments: 54,
-        isLiked: true,
-        createdAt: DateTime.now().subtract(const Duration(days: 1)),
-        achievementBadge: '🏺 Explorer',
-        distanceKm: 4.2,
-        time: const Duration(hours: 2, minutes: 15),
-        difficulty: 'Medium',
-      ),
-      PostModel(
-        id: '3',
-        userId: 'm3',
-        username: 'Khaled_Sahara',
-        wilayaBadge: 'Tamanrasset',
-        journeyId: 'j3',
-        photoUrl: 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=1000&q=80',
-        caption: 'Assekrem... The sunset here is unlike anywhere else. A true challenge 🐪🔥',
-        tags: ['#Sahara'],
-        likes: 890,
-        comments: 120,
-        isLiked: false,
-        createdAt: DateTime.now().subtract(const Duration(days: 2)),
-        achievementBadge: '🐪 Nomad',
-        distanceKm: 12.0,
-        time: const Duration(hours: 6, minutes: 0),
-        difficulty: 'Extreme',
-      ),
-    ];
-    
-    _posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    _isLoading = false;
-    Future.microtask(() => notifyListeners());
-  }
-
-  Future<void> addPost(PostModel post) async {
-    _posts.insert(0, post);
-    await _savePosts();
+  Future<void> fetchPosts() async {
+    _isLoading = true;
     notifyListeners();
-  }
 
-  void toggleLike(String postId) async {
-    final idx = _posts.indexWhere((p) => p.id == postId);
-    if (idx != -1) {
-      if (_posts[idx].isLiked) {
-        _posts[idx].isLiked = false;
-        _posts[idx].likes -= 1;
-      } else {
-        _posts[idx].isLiked = true;
-        _posts[idx].likes += 1;
+    try {
+      // Fetch posts with associated profile data using a join
+      final data = await _supabase
+          .from('posts')
+          .select('*, profiles(username, wilaya)')
+          .order('created_at', ascending: false);
+
+      _posts = (data as List).map((post) {
+        return PostModel(
+          id: post['id'],
+          userId: post['user_id'],
+          username: post['profiles']?['username'] ?? 'Explorer',
+          wilayaBadge: post['profiles']?['wilaya'] ?? 'Algeria',
+          journeyId: post['journey_id'],
+          photoUrl: post['photo_url'] ?? '',
+          caption: post['caption'] ?? '',
+          tags: List<String>.from(post['tags'] ?? []),
+          likes: post['likes_count'] ?? 0,
+          comments: post['comments_count'] ?? 0,
+          createdAt: DateTime.parse(post['created_at']),
+          isLiked: false,
+          distanceKm: (post['distance_km'] ?? 0.0).toDouble(),
+          time: Duration(seconds: post['duration_seconds'] ?? 0),
+          difficulty: post['difficulty'] ?? 'Easy',
+        );
+      }).toList();
+      
+      // Secondary check for current user's likes
+      if (_supabase.auth.currentUser != null) {
+        final userId = _supabase.auth.currentUser!.id;
+        final likesData = await _supabase
+            .from('post_likes')
+            .select('post_id')
+            .eq('user_id', userId);
+        
+        final likedPostIds = (likesData as List).map((l) => l['post_id'] as String).toSet();
+        for (var post in _posts) {
+          if (likedPostIds.contains(post.id)) {
+            post.isLiked = true;
+          }
+        }
       }
-      await _savePosts();
+    } catch (e) {
+      debugPrint('Supabase Feed Error: $e');
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> _savePosts() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('social_posts', jsonEncode(_posts.map((p) => p.toJson()).toList()));
+  Future<void> addPost(PostModel post) async {
+    // Add to local list immediately for better UX
+    _posts.insert(0, post);
+    notifyListeners();
+
+    try {
+      // Sync with Supabase
+      await _supabase.from('posts').insert({
+        'id': post.id,
+        'user_id': post.userId,
+        'journey_id': post.journeyId,
+        'photo_url': post.photoUrl,
+        'caption': post.caption,
+        'tags': post.tags,
+        'distance_km': post.distanceKm,
+        'duration_seconds': post.time.inSeconds,
+        'difficulty': post.difficulty,
+        'created_at': post.createdAt.toIso8601String(),
+      });
+    } catch (e) {
+      debugPrint('Error syncing post to Supabase: $e');
+      // Optional: remove if failed, but usually we want to keep it locally if it's transient
+    }
+  }
+
+  Future<void> toggleLike(String postId) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return;
+
+    final idx = _posts.indexWhere((p) => p.id == postId);
+    if (idx == -1) return;
+
+    final post = _posts[idx];
+    final originalLiked = post.isLiked;
+
+    try {
+      if (originalLiked) {
+        // Unlike
+        await _supabase.from('post_likes').delete().match({'post_id': postId, 'user_id': userId});
+        post.isLiked = false;
+        post.likes--;
+      } else {
+        // Like
+        await _supabase.from('post_likes').insert({'post_id': postId, 'user_id': userId});
+        post.isLiked = true;
+        post.likes++;
+      }
+      notifyListeners();
+    } catch (e) {
+      // Revert on error
+      post.isLiked = originalLiked;
+      if (originalLiked) {
+        post.likes++;
+      } else {
+        post.likes--;
+      }
+      notifyListeners();
+    }
   }
 }

@@ -145,7 +145,7 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
                   color: Colors.white,
                 ),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedCategory,
+                  initialValue: _selectedCategory,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
@@ -185,7 +185,7 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
                   color: Colors.white,
                 ),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedWilaya,
+                  initialValue: _selectedWilaya,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(

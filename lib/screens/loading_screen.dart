@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../config/constants.dart';
 import '../models/quiz_model.dart';
-import '../models/itinerary_model.dart';
+
 import '../services/ai_service.dart';
 import 'itinerary_screen.dart';
 

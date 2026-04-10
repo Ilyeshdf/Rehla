@@ -24,6 +24,8 @@ class QuizStepWidget extends StatelessWidget {
         return _InterestsStep();
       case 5:
         return _SpecialNeedsStep();
+      case 6:
+        return _GuideStep();
       default:
         return const SizedBox();
     }
@@ -47,7 +49,7 @@ class _DestinationStep extends StatelessWidget {
               color: AppConstants.backgroundElevated,
             ),
             child: DropdownButtonFormField<String>(
-              value: quiz.answers.destination.isEmpty
+              initialValue: quiz.answers.destination.isEmpty
                   ? null
                   : quiz.answers.destination,
               decoration: const InputDecoration(
@@ -383,7 +385,6 @@ class _SpecialNeedsStep extends StatelessWidget {
                   ],
                 ),
                 value: isSelected,
-                activeColor: AppConstants.accentTeal,
                 onChanged: (_) =>
                     quiz.toggleSpecialNeed(need['id'] as String),
                 shape: RoundedRectangleBorder(
@@ -620,6 +621,62 @@ class _InterestChip extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _GuideStep extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final quiz = context.watch<QuizProvider>();
+    return _QuizStepLayout(
+      question: 'DO YOU WANT\nA GUIDE?',
+      questionAr: 'تحب دليل سياحي؟',
+      subtitle: 'OPTIONAL STEP',
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppConstants.backgroundCard,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: quiz.answers.wantsGuide
+                    ? AppConstants.accentTeal
+                    : AppConstants.divider,
+                width: quiz.answers.wantsGuide ? 2 : 1,
+              ),
+            ),
+            child: SwitchListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.explore,
+                    color: quiz.answers.wantsGuide
+                        ? AppConstants.accentTeal
+                        : AppConstants.textTertiary,
+                  ),
+                  const SizedBox(width: 16),
+                  Text(
+                    'Yes, I want a guide',
+                    style: GoogleFonts.cairo(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: quiz.answers.wantsGuide
+                          ? AppConstants.accentTeal
+                          : AppConstants.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+              value: quiz.answers.wantsGuide,
+              onChanged: (val) => quiz.setWantsGuide(val),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

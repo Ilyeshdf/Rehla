@@ -1,0 +1,25 @@
+Analyzing rehla...                                              
+
+   info • Statements in an if should be enclosed in a block • lib/providers/feed_provider.dart:122:26 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/providers/feed_provider.dart:122:45 • curly_braces_in_flow_control_structures
+warning • Unused import: 'dart:ui' • lib/screens/gamification/camera_capture_screen.dart:2:8 • unused_import
+   info • The import of 'package:flutter/services.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/gamification/camera_capture_screen.dart:4:8 • unnecessary_import
+warning • The value of the local variable 'tempDir' isn't used • lib/screens/gamification/camera_capture_screen.dart:130:13 • unused_local_variable
+warning • Unused import: '../quiz_screen.dart' • lib/screens/gamification/explorer_profile_screen.dart:10:8 • unused_import
+   info • Missing type annotation • lib/screens/gamification/explorer_profile_screen.dart:355:33 • strict_top_level_inference
+  error • The named parameter 'journey' is required, but there's no corresponding argument • lib/screens/gamification/journey_tracker_screen.dart:218:37 • missing_required_argument
+  error • The named parameter 'imagePath' isn't defined • lib/screens/gamification/journey_tracker_screen.dart:218:55 • undefined_named_parameter
+warning • Unused import: 'dart:io' • lib/screens/gamification/social_feed_screen.dart:1:8 • unused_import
+warning • Unused import: '../models/itinerary_model.dart' • lib/screens/loading_screen.dart:6:8 • unused_import
+warning • Unused import: 'gamification/leaderboard_screen.dart' • lib/screens/main_navigator.dart:6:8 • unused_import
+warning • The value of the local variable 'isRejected' isn't used • lib/screens/partner/partner_bookings_screen.dart:96:19 • unused_local_variable
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/partner/partner_listing_screen.dart:148:19 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/partner/partner_listing_screen.dart:188:19 • deprecated_member_use
+warning • Unused import: 'package:http/http.dart' • lib/services/ai_service.dart:3:8 • unused_import
+warning • Unused import: '../config/constants.dart' • lib/services/ai_service.dart:4:8 • unused_import
+   info • 'dialogBackgroundColor' is deprecated and shouldn't be used. Use DialogThemeData.backgroundColor instead. This feature was deprecated after v3.27.0-0.1.pre • lib/widgets/booking_modal_widget.dart:52:13 • deprecated_member_use
+warning • Unused import: 'package:google_fonts/google_fonts.dart' • lib/widgets/progress_bar_widget.dart:2:8 • unused_import
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/widgets/quiz_step_widget.dart:50:15 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/widgets/quiz_step_widget.dart:386:17 • deprecated_member_use
+
+21 issues found. (ran in 3.2s)

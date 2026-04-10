@@ -4,7 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../config/constants.dart';
 import '../../providers/user_provider.dart';
-import 'journey_tracker_screen.dart';
+import '../../models/quiz_model.dart';
+import '../../providers/navigation_provider.dart';
+import '../../providers/journey_provider.dart';
+import 'leaderboard_screen.dart';
 
 class ExplorerProfileScreen extends StatelessWidget {
   const ExplorerProfileScreen({super.key});
@@ -70,6 +73,15 @@ class ExplorerProfileScreen extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
+                          IconButton(
+                            icon: const Icon(Icons.leaderboard_outlined,
+                                color: AppConstants.accentGold),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const LeaderboardScreen(),
+                              ));
+                            },
+                          ),
                           IconButton(
                             icon: const Icon(Icons.settings_outlined,
                                 color: AppConstants.textTertiary),
@@ -240,9 +252,13 @@ class ExplorerProfileScreen extends StatelessWidget {
                     height: 56,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const JourneyTrackerScreen(),
-                        ));
+                        final journey = context.read<JourneyProvider>();
+                        if (!journey.isActive) {
+                          context.read<QuizProvider>().reset();
+                          journey.startJourney();
+                        }
+                        // Navigate to the Journey Tab (index 2)
+                        context.read<NavigationProvider>().setIndex(2);
                       },
                       icon: const Icon(Icons.play_circle_fill, size: 24),
                       label: Text(
@@ -345,7 +361,7 @@ class ExplorerProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAchievementBadge(achievement) {
+  Widget _buildAchievementBadge(var achievement) {
     final bool isUnlocked = achievement.isUnlocked;
 
     return Container(

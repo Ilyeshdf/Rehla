@@ -46,7 +46,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
                 }
 
                 if (userProvider.currentUser != null) {
-                  leaderboard.insertCurrentUser(userProvider.currentUser!);
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (context.mounted) {
+                      leaderboard.insertCurrentUser(userProvider.currentUser!);
+                    }
+                  });
                 }
 
                 return Column(

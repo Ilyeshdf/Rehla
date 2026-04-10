@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       Image.network(
-                        'https://images.unsplash.com/photo-1549880181-59a44fc0afdc?auto=format&fit=crop&w=1200',
+                        'https://images.unsplash.com/photo-1512401886107-73bed46f0fa0?auto=format&fit=crop&w=1200',
                         fit: BoxFit.cover,
                       ),
                       Container(

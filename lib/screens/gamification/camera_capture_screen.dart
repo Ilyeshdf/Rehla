@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,7 +25,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   File? _filteredImage;
   bool _isProcessing = false;
   Position? _currentPosition;
-  String _selectedFilter = 'طبيعي'; // Natural, Warm, Cool
+  final String _selectedFilter = 'طبيعي'; // Natural, Warm, Cool
   int _selectedCameraIndex = 0;
 
   @override
@@ -111,12 +109,29 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   Future<void> _processImage(String path) async {
     setState(() => _isProcessing = true);
     try {
-      // Load image
+      // Fallback: If no filter or on web where heavy image processing might hang,
+      // just show the raw captured image initially
+      if (_selectedFilter == 'طبيعي') {
+        setState(() {
+          _filteredImage = File(path);
+          _isProcessing = false;
+        });
+        return;
+      }
+
+      // Load image for processing
       final File imageFile = File(path);
       final bytes = await imageFile.readAsBytes();
       img.Image? rawImage = img.decodeImage(bytes);
 
-      if (rawImage == null) throw Exception("Failed to decode image");
+      if (rawImage == null) {
+        // Silently fallback to raw if decoding fails
+        setState(() {
+          _filteredImage = File(path);
+          _isProcessing = false;
+        });
+        return;
+      }
 
       // Apply Filter
       if (_selectedFilter == 'دافئ') {
@@ -126,9 +141,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       }
 
       // Encode and save to temp
-      final compressedBytes = img.encodeJpg(rawImage, quality: 80); // Compress to keep it small
+      final compressedBytes = img.encodeJpg(rawImage, quality: 80);
       final tempDir = await getTemporaryDirectory();
-      final tempFile = File('\${tempDir.path}/processed_\${DateTime.now().millisecondsSinceEpoch}.jpg');
+      final tempFile = File('${tempDir.path}/processed_${DateTime.now().millisecondsSinceEpoch}.jpg');
       await tempFile.writeAsBytes(compressedBytes);
 
       setState(() {
@@ -136,7 +151,11 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         _isProcessing = false;
       });
     } catch (e) {
-      setState(() => _isProcessing = false);
+      // Final fallback to original path
+      setState(() {
+        _filteredImage = File(path);
+        _isProcessing = false;
+      });
     }
   }
 
@@ -266,7 +285,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         children: [
           // The image
           Positioned.fill(
-            child: Image.file(_filteredImage!, fit: BoxFit.cover),
+            child: Image.network(_filteredImage!.path, fit: BoxFit.cover),
           ),
 
           // GPS Timestamp Overlay embedded on UI
@@ -316,56 +335,68 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
             ),
           ),
 
-          // Bottom Bar containing filters & action
+          // Bottom Bar containing action buttons
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 120,
+              height: 140,
               width: double.infinity,
-              color: Colors.black87,
-              margin: const EdgeInsets.only(bottom: 0),
-              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black.withValues(alpha: 0.9)],
+                ),
+              ),
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 40),
               child: Row(
                 children: [
-                  // Filter Chips
+                  // Repeat / Retake Button
                   Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: ['طبيعي', 'دافئ', 'بارد'].map((filter) {
-                          final isSelected = _selectedFilter == filter;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: ChoiceChip(
-                              label: Text(filter, style: GoogleFonts.cairo()),
-                              selected: isSelected,
-                              selectedColor: AppConstants.primaryGreen,
-                              onSelected: (val) {
-                                if (val) {
-                                  setState(() => _selectedFilter = filter);
-                                  _processImage(_capturedImage!.path);
-                                }
-                              },
-                            ),
-                          );
-                        }).toList(),
+                    child: SizedBox(
+                      height: 56,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _capturedImage = null;
+                            _filteredImage = null;
+                          });
+                        },
+                        icon: const Icon(Icons.refresh, color: Colors.white),
+                        label: Text(
+                          'REPEAT',
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: Colors.white, letterSpacing: 1),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.white, width: 2),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        ),
                       ),
                     ),
                   ),
-
-                  // Use Button
-                  SizedBox(
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: _isProcessing ? null : _saveAndReturn,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppConstants.accentGold,
-                        foregroundColor: AppConstants.primaryGreenDark,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      ),
-                      child: _isProcessing
+                  const SizedBox(width: 16),
+                  
+                  // Post It Button
+                  Expanded(
+                    child: SizedBox(
+                      height: 56,
+                      child: ElevatedButton.icon(
+                        onPressed: _isProcessing ? null : _saveAndReturn,
+                        icon: _isProcessing 
                           ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black))
-                          : Text('استخدم', style: GoogleFonts.cairo(fontWeight: FontWeight.bold, fontSize: 16)),
+                          : const Icon(Icons.send_rounded),
+                        label: Text(
+                          'POST IT',
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.w800, letterSpacing: 1),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppConstants.accentTeal,
+                          foregroundColor: AppConstants.backgroundDark,
+                          elevation: 8,
+                          shadowColor: AppConstants.accentTeal.withValues(alpha: 0.5),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        ),
+                      ),
                     ),
                   ),
                 ],

@@ -6,6 +6,10 @@ class AppConstants {
   static const String groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
   static const String groqModel = 'llama3-8b-8192';
 
+  // Supabase Configuration
+  static const String supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co';
+  static const String supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+
   // ── Mediterranean Horizon Dark Theme Colors ──
   static const Color backgroundDark = Color(0xFF0A0E1A);
   static const Color backgroundCard = Color(0xFF141825);

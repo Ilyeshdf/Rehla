@@ -118,6 +118,9 @@ class Site {
   final int entryPrice;
   final String hours;
   final String tip;
+  final bool hasBooking;
+  final List<Guide> guides;
+  final AiMetadata? metadata;
 
   Site({
     required this.id,
@@ -126,6 +129,9 @@ class Site {
     required this.entryPrice,
     required this.hours,
     required this.tip,
+    this.hasBooking = false,
+    this.guides = const [],
+    this.metadata,
   });
 
   factory Site.fromJson(Map<String, dynamic> json) {
@@ -136,6 +142,69 @@ class Site {
       entryPrice: json['entry_price'] ?? 0,
       hours: json['hours'] ?? '',
       tip: json['tip'] ?? '',
+      hasBooking: json['has_booking'] ?? false,
+      guides: (json['guides'] as List<dynamic>?)
+              ?.map((g) => Guide.fromJson(g))
+              .toList() ??
+          [],
+      metadata: json['metadata'] != null
+          ? AiMetadata.fromJson(json['metadata'])
+          : null,
+    );
+  }
+}
+
+class Guide {
+  final String id;
+  final String name;
+  final List<String> languages;
+  final double rating;
+  final String phone;
+  final String schedule;
+  final int basePrice;
+
+  Guide({
+    required this.id,
+    required this.name,
+    required this.languages,
+    required this.rating,
+    required this.phone,
+    required this.schedule,
+    required this.basePrice,
+  });
+
+  factory Guide.fromJson(Map<String, dynamic> json) {
+    return Guide(
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      languages: List<String>.from(json['languages'] ?? []),
+      rating: (json['rating'] ?? 0.0).toDouble(),
+      phone: json['phone'] ?? '',
+      schedule: json['schedule'] ?? '',
+      basePrice: json['base_price'] ?? 0,
+    );
+  }
+}
+
+class AiMetadata {
+  final String budgetLevel;
+  final String bestSeason;
+  final int recommendedDurationMinutes;
+  final String aiContext;
+
+  AiMetadata({
+    required this.budgetLevel,
+    required this.bestSeason,
+    required this.recommendedDurationMinutes,
+    required this.aiContext,
+  });
+
+  factory AiMetadata.fromJson(Map<String, dynamic> json) {
+    return AiMetadata(
+      budgetLevel: json['budget_level'] ?? 'medium',
+      bestSeason: json['best_season'] ?? 'year_round',
+      recommendedDurationMinutes: json['recommended_duration_minutes'] ?? 120,
+      aiContext: json['ai_context'] ?? '',
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import '../config/constants.dart';
+
 import '../models/itinerary_model.dart';
 import 'agents/orchestrator.dart';
 
@@ -32,6 +31,7 @@ class AiService {
         return Itinerary(
           destination: itinerary.destination,
           days: itinerary.days.sublist(0, days),
+          wantsGuide: false,
         );
       } else {
         final extendedDays = List<ItineraryDay>.from(itinerary.days);
@@ -47,6 +47,7 @@ class AiService {
         return Itinerary(
           destination: itinerary.destination,
           days: extendedDays,
+          wantsGuide: false,
         );
       }
     } catch (e) {
@@ -58,15 +59,16 @@ class AiService {
     final generatedDays = List.generate(days, (i) {
       return ItineraryDay(
         day: i + 1,
-        morning: TimeSlot(place: 'Algiers Casbah', activity: 'Safe guided historic walk', category: 'Heritage'),
-        afternoon: TimeSlot(place: 'Local Restaurant', activity: 'Traditional culinary experience', category: 'Food'),
-        evening: TimeSlot(place: 'Verified Hotel Area', activity: 'Safe evening relaxation', tip: 'Verified zones only'),
+        morning: TimeSlot(place: 'Algiers Casbah', activity: 'Safe guided historic walk', category: 'Heritage', placeType: PlaceType.public),
+        afternoon: TimeSlot(place: 'Local Restaurant', activity: 'Traditional culinary experience', category: 'Food', placeType: PlaceType.comfortable),
+        evening: TimeSlot(place: 'Verified Hotel Area', activity: 'Safe evening relaxation', tip: 'Verified zones only', placeType: PlaceType.comfortable),
       );
     });
 
     return Itinerary(
       destination: 'Algiers',
       days: generatedDays,
+      wantsGuide: false,
     );
   }
 }

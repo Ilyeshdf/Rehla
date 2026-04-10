@@ -24,6 +24,9 @@ class JourneyProvider extends ChangeNotifier {
   StreamSubscription<Position>? _positionStream;
 
   void startJourney() async {
+    _timer?.cancel();
+    _positionStream?.cancel();
+    
     _isActive = true;
     _duration = Duration.zero;
     _distanceKm = 0.0;
@@ -41,7 +44,7 @@ class JourneyProvider extends ChangeNotifier {
       _positionStream = Geolocator.getPositionStream(
         locationSettings: const LocationSettings(
           accuracy: LocationAccuracy.bestForNavigation,
-          distanceFilter: 5, // minimum 5 meters to trigger update
+          distanceFilter: 5,
         ),
       ).listen((Position position) {
         if (_path.isNotEmpty) {
@@ -62,6 +65,14 @@ class JourneyProvider extends ChangeNotifier {
       });
     }
     notifyListeners();
+  }
+
+  String? _currentPlaceName;
+  String? get currentPlaceName => _currentPlaceName;
+
+  void startJourneyWithPlace(String placeName) {
+    _currentPlaceName = placeName;
+    startJourney();
   }
 
   void addPhoto(String path) {
@@ -91,6 +102,25 @@ class JourneyProvider extends ChangeNotifier {
       difficulty: _distanceKm > 10 ? 'صعب' : (_distanceKm > 4 ? 'متوسط' : 'سهل'),
       achievementsUnlocked: [],
       xpEarned: (_distanceKm * 10).toInt() + 50,
+    );
+  }
+
+  JourneyModel getCurrentJourney(String userId, String? placeName) {
+    return JourneyModel(
+      id: 'current',
+      userId: userId,
+      placeId: 'active',
+      placeName: placeName ?? 'استكشاف',
+      wilaya: 'الجزائر',
+      startTime: DateTime.now().subtract(_duration),
+      endTime: DateTime.now(),
+      duration: _duration,
+      distanceKm: _distanceKm,
+      elevationGain: _elevationGain,
+      photos: List.from(_photos),
+      difficulty: _distanceKm > 10 ? 'صعب' : (_distanceKm > 4 ? 'متوسط' : 'سهل'),
+      achievementsUnlocked: [],
+      xpEarned: (_distanceKm * 10).toInt(),
     );
   }
 }

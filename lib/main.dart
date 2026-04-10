@@ -7,10 +7,21 @@ import 'providers/user_provider.dart';
 import 'providers/journey_provider.dart';
 import 'providers/feed_provider.dart';
 import 'providers/leaderboard_provider.dart';
+import 'providers/navigation_provider.dart';
 import 'screens/splash_screen.dart';
 
-void main() {
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'config/constants.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Supabase with the project configuration
+  await Supabase.initialize(
+    url: AppConstants.supabaseUrl,
+    anonKey: AppConstants.supabaseAnonKey,
+  );
+
   runApp(
     MultiProvider(
       providers: [
@@ -19,6 +30,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => JourneyProvider()),
         ChangeNotifierProvider(create: (_) => FeedProvider()),
         ChangeNotifierProvider(create: (_) => LeaderboardProvider()),
+        ChangeNotifierProvider(create: (_) => NavigationProvider()),
       ],
       child: const RehlaApp(),
     ),

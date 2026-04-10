@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../config/constants.dart';
 import '../../models/journey_model.dart';
 import '../../models/achievement_model.dart';
-import 'post_creator_screen.dart';
 
 class AchievementUnlockScreen extends StatefulWidget {
   final JourneyModel journey;
@@ -25,7 +24,6 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
   late AnimationController _pulseController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
-  late Animation<double> _slideAnimation;
   late Animation<double> _pulseAnimation;
 
   @override
@@ -55,13 +53,6 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
       ),
     );
 
-    _slideAnimation = Tween<double>(begin: 50.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _mainController,
-        curve: const Interval(0.4, 0.8, curve: Curves.easeOut),
-      ),
-    );
-
     _pulseAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
@@ -78,12 +69,6 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
 
   @override
   Widget build(BuildContext context) {
-    final hasNewAchievement = widget.unlockedAchievements.isNotEmpty;
-    final primaryAchievement =
-        hasNewAchievement ? widget.unlockedAchievements.first : null;
-    final currentXp = 1240;
-    final nextGoalXp = 2000;
-
     return Scaffold(
       backgroundColor: AppConstants.backgroundDark,
       body: Stack(
@@ -103,309 +88,161 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
             ),
           ),
 
-          // Particle effect overlay
-          Positioned.fill(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: RadialGradient(
-                    center: Alignment.center,
-                    radius: 0.8,
-                    colors: [
-                      AppConstants.accentGold.withValues(alpha: 0.05),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 60),
 
-                  // "NEW ACHIEVEMENT" Label
+                  // Success Icon
                   FadeTransition(
                     opacity: _fadeAnimation,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppConstants.accentGold.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppConstants.accentGold.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Text(
-                        'NEW ACHIEVEMENT',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppConstants.accentGold,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // "You've reached a new horizon"
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: AnimatedBuilder(
-                      animation: _slideAnimation,
-                      builder: (context, child) {
-                        return Transform.translate(
-                          offset: Offset(0, _slideAnimation.value),
-                          child: child,
-                        );
-                      },
-                      child: Text(
-                        "You've reached a\nnew horizon",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: AppConstants.textPrimary,
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-
-                  // Mountain Badge
-                  ScaleTransition(
-                    scale: _scaleAnimation,
-                    child: AnimatedBuilder(
-                      animation: _pulseAnimation,
-                      builder: (context, child) {
-                        return Transform.scale(
-                          scale: _pulseAnimation.value,
-                          child: child,
-                        );
-                      },
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
                       child: Container(
-                        width: 160,
-                        height: 160,
+                        padding: const EdgeInsets.all(32),
                         decoration: BoxDecoration(
+                          color: AppConstants.accentGold.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              AppConstants.accentGold.withValues(alpha: 0.3),
-                              AppConstants.accentGold.withValues(alpha: 0.05),
-                            ],
-                          ),
-                          border: Border.all(
-                            color: AppConstants.accentGold.withValues(alpha: 0.4),
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppConstants.accentGold.withValues(alpha: 0.3),
-                              blurRadius: 40,
-                              spreadRadius: 5,
-                            ),
-                          ],
+                          border: Border.all(color: AppConstants.accentGold.withValues(alpha: 0.3), width: 2),
                         ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Mountain icon
-                              CustomPaint(
-                                size: const Size(60, 50),
-                                painter: _MountainPainter(
-                                  color: AppConstants.accentGold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        child: const Icon(Icons.stars_rounded, color: AppConstants.accentGold, size: 80),
                       ),
                     ),
                   ),
+                  
                   const SizedBox(height: 32),
 
-                  // Achievement Name
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: Text(
-                      hasNewAchievement
-                          ? primaryAchievement!.name.toUpperCase()
-                          : 'SAHARAN EXPLORER',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: AppConstants.accentGold,
-                        letterSpacing: 3,
-                      ),
+                  Text(
+                    widget.unlockedAchievements.isNotEmpty ? 'NEW ACHIEVEMENT' : 'REWARD EARNED',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: AppConstants.accentGold,
+                      letterSpacing: 4,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  
+                  const SizedBox(height: 12),
+                  
+                  Text(
+                    widget.unlockedAchievements.isNotEmpty ? 'You Reached a Milestone!' : 'Journey Shared',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                    ),
+                  ),
 
-                  // Level & Progress
+                  const SizedBox(height: 48),
+
+                  // XP Reward Box
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                       decoration: BoxDecoration(
                         color: AppConstants.backgroundCard,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppConstants.divider),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(color: AppConstants.accentTeal.withValues(alpha: 0.3)),
                       ),
-                      child: Column(
+                      child: Row(
                         children: [
-                          Text(
-                            'Your New Rank',
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: AppConstants.textSecondary,
-                              letterSpacing: 1,
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppConstants.accentTeal.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
                             ),
+                            child: const Icon(Icons.bolt, color: AppConstants.accentTeal, size: 32),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Explorer Level 5',
-                            style: GoogleFonts.poppins(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              color: AppConstants.textPrimary,
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '+150 XP EARNED',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppConstants.accentTeal,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                                Text(
+                                  'For sharing your journey',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: AppConstants.textTertiary,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 20),
-
-                          // XP Progress Bar
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'TOTAL XP',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 10,
-                                  color: AppConstants.textTertiary,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                              Text(
-                                'NEXT GOAL',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 10,
-                                  color: AppConstants.textTertiary,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: LinearProgressIndicator(
-                              value: currentXp / nextGoalXp,
-                              minHeight: 8,
-                              backgroundColor: AppConstants.backgroundDark,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                AppConstants.accentTeal,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '$currentXp',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppConstants.accentTeal,
-                                ),
-                              ),
-                              Text(
-                                '$nextGoalXp',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppConstants.textSecondary,
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
                     ),
                   ),
+                  
                   const SizedBox(height: 32),
 
-                  // Share Button
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  PostCreatorScreen(journey: widget.journey),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.share, size: 20),
-                        label: Text(
-                          'SHARE WITH COMMUNITY',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1,
-                          ),
+                  // Achievement Unlock (If applicable)
+                  if (widget.unlockedAchievements.isNotEmpty) ...[
+                    FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: AppConstants.accentGold.withValues(alpha: 0.05),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: AppConstants.accentGold.withValues(alpha: 0.3)),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppConstants.accentTeal,
-                          foregroundColor: AppConstants.backgroundDark,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              widget.unlockedAchievements.first.badgeEmoji,
+                              style: const TextStyle(fontSize: 48),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'UNLOCKED: ${widget.unlockedAchievements.first.name.toUpperCase()}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w800,
+                                color: AppConstants.accentGold,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
+                    const SizedBox(height: 32),
+                  ],
 
-                  // Back to Profile
+                  // Continue Button
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: SizedBox(
                       width: double.infinity,
-                      height: 56,
-                      child: OutlinedButton.icon(
+                      height: 64,
+                      child: ElevatedButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.person_outline, size: 20),
-                        label: Text(
-                          'BACK TO PROFILE',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1,
-                          ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppConstants.accentTeal,
+                          foregroundColor: AppConstants.backgroundDark,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          elevation: 0,
                         ),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppConstants.textSecondary,
-                          side: BorderSide(
-                            color: AppConstants.divider,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                        child: Text(
+                          'CONTINUE ADVENTURE',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 2,
                           ),
                         ),
                       ),
@@ -451,41 +288,4 @@ class _GlowPainter extends CustomPainter {
       oldDelegate.scale != scale;
 }
 
-// Custom painter for the mountain/triangle icon
-class _MountainPainter extends CustomPainter {
-  final Color color;
-
-  _MountainPainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    // Main mountain
-    final mainPath = Path()
-      ..moveTo(size.width * 0.5, 0)
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
-      ..close();
-
-    canvas.drawPath(mainPath, paint);
-
-    // Snow cap
-    final snowPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.6)
-      ..style = PaintingStyle.fill;
-
-    final snowPath = Path()
-      ..moveTo(size.width * 0.5, 0)
-      ..lineTo(size.width * 0.6, size.height * 0.25)
-      ..lineTo(size.width * 0.4, size.height * 0.25)
-      ..close();
-
-    canvas.drawPath(snowPath, snowPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
+// ... Removed unused _MountainPainter class ...
