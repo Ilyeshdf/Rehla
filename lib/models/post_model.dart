@@ -9,7 +9,7 @@ class PostModel {
   final List<String> tags;
   int likes;
   int comments;
-  bool isLiked; // Added this field
+  bool isLiked; 
   final DateTime createdAt;
   final String achievementBadge;
   final double distanceKm;

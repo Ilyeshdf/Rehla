@@ -7,6 +7,7 @@ import '../../providers/user_provider.dart';
 import '../../models/quiz_model.dart';
 import '../../providers/navigation_provider.dart';
 import '../../providers/journey_provider.dart';
+import '../../providers/feed_provider.dart';
 import 'leaderboard_screen.dart';
 
 class ExplorerProfileScreen extends StatelessWidget {
@@ -45,7 +46,7 @@ class ExplorerProfileScreen extends StatelessWidget {
           backgroundColor: AppConstants.backgroundDark,
           body: CustomScrollView(
             slivers: [
-              // Profile Header
+
               SliverToBoxAdapter(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(
@@ -60,7 +61,7 @@ class ExplorerProfileScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      // Top row
+
                       Row(
                         children: [
                           Text(
@@ -90,8 +91,6 @@ class ExplorerProfileScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 20),
-
-                      // Avatar & Rank
                       Stack(
                         alignment: Alignment.bottomRight,
                         children: [
@@ -149,8 +148,6 @@ class ExplorerProfileScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-
-                      // Name
                       Text(
                         user.username,
                         style: GoogleFonts.poppins(
@@ -160,7 +157,6 @@ class ExplorerProfileScreen extends StatelessWidget {
                         ),
                       ),
 
-                      // Location badge
                       Container(
                         margin: const EdgeInsets.only(top: 6),
                         padding: const EdgeInsets.symmetric(
@@ -187,7 +183,70 @@ class ExplorerProfileScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
 
-                      // Level & XP Bar
+                      // Guide Mode Toggle
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: user.isGuide 
+                              ? AppConstants.accentTeal.withValues(alpha: 0.1)
+                              : AppConstants.backgroundElevated,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: user.isGuide 
+                                ? AppConstants.accentTeal.withValues(alpha: 0.3)
+                                : AppConstants.divider,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: user.isGuide 
+                                    ? AppConstants.accentTeal
+                                    : AppConstants.textTertiary.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Icon(
+                                Icons.explore,
+                                color: user.isGuide ? AppConstants.backgroundDark : AppConstants.textTertiary,
+                                size: 20,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'GUIDE MODE',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w800,
+                                      color: user.isGuide ? AppConstants.accentTeal : AppConstants.textPrimary,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  Text(
+                                    user.isGuide ? 'You are visible as a guide' : 'Offer your services as a guide',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 10,
+                                      color: AppConstants.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Switch.adaptive(
+                              value: user.isGuide,
+                              activeColor: AppConstants.accentTeal,
+                              onChanged: (_) => userProvider.toggleGuideStatus(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -225,24 +284,22 @@ class ExplorerProfileScreen extends StatelessWidget {
                 ),
               ),
 
-              // Stats Row
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      _buildStatBox('Trails', '0', Icons.route),
+                      _buildStatBox('Expeditions', '${user.firstDiscoveries.length}', Icons.route),
                       const SizedBox(width: 10),
                       _buildStatBox('Places',
                           '${user.unlockedAchievements.length}', Icons.place),
                       const SizedBox(width: 10),
-                      _buildStatBox('Photos', '0', Icons.camera_alt),
+                      _buildStatBox('Moments', '${context.read<FeedProvider>().posts.where((p) => p.userId == user.id).length}', Icons.camera_alt),
                     ],
                   ),
                 ),
               ),
 
-              // Start Journey CTA
               SliverToBoxAdapter(
                 child: Padding(
                   padding:
@@ -257,7 +314,7 @@ class ExplorerProfileScreen extends StatelessWidget {
                           context.read<QuizProvider>().reset();
                           journey.startJourney();
                         }
-                        // Navigate to the Journey Tab (index 2)
+
                         context.read<NavigationProvider>().setIndex(2);
                       },
                       icon: const Icon(Icons.play_circle_fill, size: 24),
@@ -281,7 +338,6 @@ class ExplorerProfileScreen extends StatelessWidget {
                 ),
               ),
 
-              // Achievements Header
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
@@ -296,7 +352,6 @@ class ExplorerProfileScreen extends StatelessWidget {
                 ),
               ),
 
-              // Achievements Grid
               SliverPadding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16),

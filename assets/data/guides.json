@@ -1,0 +1,54 @@
+[
+  {
+    "id": "g1",
+    "name": "أمين بن يحيى",
+    "bio": "خبير في تاريخ القصبة والآثار الرومانية. أحب مشاركة قصص بلادي مع الزوار.",
+    "photo_url": "https://randomuser.me/api/portraits/men/32.jpg",
+    "rating": 4.9,
+    "reviews_count": 128,
+    "languages": ["العربية", "الفرنسية", "الإنجليزية"],
+    "specialties": ["تاريخ", "ثقافة", "تصوير"],
+    "price_per_day": 3500,
+    "wilaya": "Algiers",
+    "is_verified": true
+  },
+  {
+    "id": "g2",
+    "name": "ليلى منصوري",
+    "bio": "متخصصة في جولات الطعام والأسواق التقليدية. سآخذكم إلى أفضل المطاعم المخفية في بجاية.",
+    "photo_url": "https://randomuser.me/api/portraits/women/44.jpg",
+    "rating": 4.8,
+    "reviews_count": 85,
+    "languages": ["العربية", "الفرنسية", "الأمازيغية"],
+    "specialties": ["طعام", "تسوق", "مغامرة"],
+    "price_per_day": 3000,
+    "wilaya": "Bejaia",
+    "is_verified": true
+  },
+  {
+    "id": "g3",
+    "name": "ياسين قسنطيني",
+    "bio": "دليل سياحي مرخص متخصص في الجسور المعلقة بقسنطينة. أصحبكم في رحلة عبر الزمن.",
+    "photo_url": "https://randomuser.me/api/portraits/men/67.jpg",
+    "rating": 4.7,
+    "reviews_count": 210,
+    "languages": ["العربية", "الإنجليزية"],
+    "specialties": ["تاريخ", "عمارة"],
+    "price_per_day": 4000,
+    "wilaya": "Constantine",
+    "is_verified": true
+  },
+  {
+    "id": "g4",
+    "name": "عمر الطوارقي",
+    "bio": "دليل محلي في صحراء جانت. خبير في مسارات الطاسيلي ناجر والطبخ التقليدي في الخلا.",
+    "photo_url": "https://randomuser.me/api/portraits/men/88.jpg",
+    "rating": 5.0,
+    "reviews_count": 156,
+    "languages": ["العربية", "الفرنسية", "التارقية"],
+    "specialties": ["صحراء", "مغامرة", "تاريخ قديم"],
+    "price_per_day": 5000,
+    "wilaya": "Djanet",
+    "is_verified": true
+  }
+]

@@ -9,6 +9,7 @@ class QuizAnswers {
   List<String> interests;
   List<String> specialNeeds;
   bool wantsGuide;
+  String? selectedGuideId;
 
   QuizAnswers({
     this.destination = '',
@@ -16,13 +17,14 @@ class QuizAnswers {
     this.travelerType = '',
     this.budget = '',
     this.wantsGuide = false,
+    this.selectedGuideId,
     List<String>? interests,
     List<String>? specialNeeds,
   })  : interests = interests ?? [],
         specialNeeds = specialNeeds ?? [];
 
   String buildPrompt() {
-    // Map IDs to Labels for AI
+
     final travelerLabel = AppConstants.travelerTypes
         .firstWhere((t) => t['id'] == travelerType, orElse: () => {'label': travelerType})['label'];
     final budgetLabel = AppConstants.budgetTypes
@@ -39,6 +41,7 @@ class QuizAnswers {
     String? travelerType,
     String? budget,
     bool? wantsGuide,
+    String? selectedGuideId,
     List<String>? interests,
     List<String>? specialNeeds,
   }) {
@@ -48,6 +51,7 @@ class QuizAnswers {
       travelerType: travelerType ?? this.travelerType,
       budget: budget ?? this.budget,
       wantsGuide: wantsGuide ?? this.wantsGuide,
+      selectedGuideId: selectedGuideId ?? this.selectedGuideId,
       interests: interests ?? List.from(this.interests),
       specialNeeds: specialNeeds ?? List.from(this.specialNeeds),
     );
@@ -101,6 +105,13 @@ class QuizProvider extends ChangeNotifier {
 
   void setWantsGuide(bool wants) {
     _answers.wantsGuide = wants;
+    if (!wants) _answers.selectedGuideId = null;
+    notifyListeners();
+  }
+
+  void setSelectedGuideId(String? id) {
+    _answers.selectedGuideId = id;
+    if (id != null) _answers.wantsGuide = true;
     notifyListeners();
   }
 
@@ -142,9 +153,9 @@ class QuizProvider extends ChangeNotifier {
       case 4:
         return _answers.interests.isNotEmpty;
       case 5:
-        return true; // Optional step
+        return true; 
       case 6:
-        return true; // Guide step
+        return true; 
       default:
         return false;
     }

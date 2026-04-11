@@ -6,7 +6,7 @@ class AchievementModel {
   final String badgeEmoji;
   bool isUnlocked;
   DateTime? unlockedAt;
-  final String category; // exploration, competitive, social
+  final String category; 
 
   AchievementModel({
     required this.id,

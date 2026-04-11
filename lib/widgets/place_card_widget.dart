@@ -5,7 +5,7 @@ import '../models/itinerary_model.dart';
 
 class PlaceCardWidget extends StatelessWidget {
   final TimeSlot timeSlot;
-  final String timeOfDay; // morning, afternoon, evening
+  final String timeOfDay; 
   final VoidCallback onBook;
   final bool isVisited;
   final VoidCallback onToggleVisited;
@@ -58,7 +58,6 @@ class PlaceCardWidget extends StatelessWidget {
     }
   }
 
-  /// Returns the visual badge info for place type
   Map<String, dynamic> get _placeTypeBadge {
     switch (timeSlot.placeType) {
       case PlaceType.comfortable:
@@ -111,7 +110,6 @@ class PlaceCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Time Header + Checkbox
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 12, 0),
             child: Row(
@@ -128,8 +126,6 @@ class PlaceCardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-
-                // Place type badge
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
@@ -154,10 +150,7 @@ class PlaceCardWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 const Spacer(),
-
-                // ✅ Notion-like Checkbox
                 GestureDetector(
                   onTap: onToggleVisited,
                   child: AnimatedContainer(
@@ -184,13 +177,11 @@ class PlaceCardWidget extends StatelessWidget {
               ],
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Place name (with strikethrough if visited)
                 Text(
                   timeSlot.place,
                   style: GoogleFonts.poppins(
@@ -215,7 +206,6 @@ class PlaceCardWidget extends StatelessWidget {
                     height: 1.6,
                   ),
                 ),
-
                 if (timeSlot.tip.isNotEmpty) ...[
                   const SizedBox(height: 16),
                   Container(
@@ -244,8 +234,6 @@ class PlaceCardWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-
-                // BOOK NOW — only for comfortable (bookable) places
                 if (timeSlot.hasBooking && !isVisited) ...[
                   const SizedBox(height: 24),
                   SizedBox(
@@ -278,8 +266,6 @@ class PlaceCardWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-
-                // Visited badge
                 if (isVisited) ...[
                   const SizedBox(height: 16),
                   Container(

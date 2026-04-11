@@ -4,11 +4,16 @@ import '../../../config/constants.dart';
 import 'partner_bookings_screen.dart';
 import 'partner_listing_screen.dart';
 
+import 'package:provider/provider.dart';
+import '../../providers/partner_provider.dart';
+
 class PartnerDashboardScreen extends StatelessWidget {
   const PartnerDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final partner = context.watch<PartnerProvider>();
+    
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -27,12 +32,17 @@ class PartnerDashboardScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: SingleChildScrollView(
+        body: RefreshIndicator(
+          onRefresh: () => partner.fetchBookings(),
+          color: AppConstants.accentTeal,
+          child: partner.isLoading 
+            ? const Center(child: CircularProgressIndicator(color: AppConstants.accentTeal))
+            : SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Welcome header
+
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
@@ -65,7 +75,7 @@ class PartnerDashboardScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'إحصائيات نشاطك التجاري',
+                      'إحصائيات نشاطك التجاري المباشرة',
                       style: GoogleFonts.cairo(
                         fontSize: 14,
                         color: Colors.white70,
@@ -76,20 +86,19 @@ class PartnerDashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // Stats cards
               Row(
                 children: [
                   _buildStatCard(
                     icon: Icons.bookmark_added,
                     label: 'إجمالي الحجوزات',
-                    value: '12',
+                    value: '${partner.totalBookings}',
                     color: AppConstants.primaryGreen,
                   ),
                   const SizedBox(width: 12),
                   _buildStatCard(
                     icon: Icons.visibility,
-                    label: 'المشاهدات هذا الأسبوع',
-                    value: '87',
+                    label: 'المشاهدات الأسبوعية',
+                    value: '${partner.weeklyViews}',
                     color: const Color(0xFF1976D2),
                   ),
                 ],
@@ -99,22 +108,21 @@ class PartnerDashboardScreen extends StatelessWidget {
                 children: [
                   _buildStatCard(
                     icon: Icons.star,
-                    label: 'التقييم',
-                    value: '4.6',
+                    label: 'التقييم العام',
+                    value: partner.rating.toStringAsFixed(1),
                     color: AppConstants.accentGold,
                   ),
                   const SizedBox(width: 12),
                   _buildStatCard(
                     icon: Icons.trending_up,
                     label: 'نسبة التحويل',
-                    value: '14%',
+                    value: '${partner.conversionRate.toStringAsFixed(1)}%',
                     color: AppConstants.success,
                   ),
                 ],
               ),
               const SizedBox(height: 28),
 
-              // Recent bookings
               Text(
                 'آخر الحجوزات',
                 style: GoogleFonts.cairo(
@@ -124,32 +132,31 @@ class PartnerDashboardScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              _buildRecentBooking(
-                name: 'أحمد بن علي',
-                place: 'فندق الأوراسي',
-                date: '2026/04/15',
-                status: 'جديد',
-              ),
-              _buildRecentBooking(
-                name: 'فاطمة الزهراء',
-                place: 'مطعم دار الجلد',
-                date: '2026/04/12',
-                status: 'مؤكد',
-              ),
-              _buildRecentBooking(
-                name: 'يوسف حمادي',
-                place: 'القصبة',
-                date: '2026/04/10',
-                status: 'مؤكد',
-              ),
+              ...partner.bookings.take(3).map((b) => _buildRecentBooking(
+                name: b['name'],
+                placeId: b['place_id'],
+                date: b['date'],
+                status: b['status'],
+              )).toList(),
+              
+              if (partner.bookings.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      'لا توجد حجوزات حالياً',
+                      style: GoogleFonts.cairo(color: AppConstants.textMedium),
+                    ),
+                  ),
+                ),
+
               const SizedBox(height: 28),
 
-              // Navigation buttons
               _buildNavButton(
                 context,
                 icon: Icons.list_alt,
                 title: 'طلبات الحجز',
-                subtitle: 'إدارة طلبات الحجز الواردة',
+                subtitle: 'إدارة طلبات الحجز الواردة (${partner.bookings.length})',
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -163,7 +170,7 @@ class PartnerDashboardScreen extends StatelessWidget {
                 context,
                 icon: Icons.store,
                 title: 'ملفي التجاري',
-                subtitle: 'تعديل معلومات نشاطك',
+                subtitle: 'تعديل معلومات نشاطك وحالتك',
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -175,6 +182,7 @@ class PartnerDashboardScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }
@@ -234,11 +242,11 @@ class PartnerDashboardScreen extends StatelessWidget {
 
   Widget _buildRecentBooking({
     required String name,
-    required String place,
+    required String placeId,
     required String date,
     required String status,
   }) {
-    final isNew = status == 'جديد';
+    final isNew = status == 'pending';
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -281,7 +289,7 @@ class PartnerDashboardScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '$place • $date',
+                  'ID: $placeId • $date',
                   style: GoogleFonts.cairo(
                     fontSize: 12,
                     color: AppConstants.textMedium,
@@ -300,11 +308,11 @@ class PartnerDashboardScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              status,
+              status == 'pending' ? 'جديد' : (status == 'confirmed' ? 'مؤكد' : 'مرفوض'),
               style: GoogleFonts.cairo(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: isNew ? AppConstants.accentGoldDark : AppConstants.success,
+                color: isNew ? AppConstants.accentGold : AppConstants.success,
               ),
             ),
           ),

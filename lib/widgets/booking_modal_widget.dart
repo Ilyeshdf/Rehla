@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:provider/provider.dart';
 import '../config/constants.dart';
 import '../models/booking_model.dart';
+import '../providers/partner_provider.dart';
 
 class BookingModalWidget extends StatefulWidget {
   final String placeName;
   final String category;
   final Function(Booking) onConfirm;
   final String bookingType;
+  final String? partnerId;
+  final String? placeId;
 
   const BookingModalWidget({
     super.key,
@@ -16,6 +20,8 @@ class BookingModalWidget extends StatefulWidget {
     required this.category,
     required this.onConfirm,
     this.bookingType = 'place',
+    this.partnerId,
+    this.placeId,
   });
 
   @override
@@ -85,7 +91,7 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Handle bar
+
               Center(
                 child: Container(
                   width: 40,
@@ -98,7 +104,6 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
               ),
               const SizedBox(height: 24),
 
-              // Header
               Row(
                 children: [
                   Container(
@@ -138,7 +143,6 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
               ),
               const SizedBox(height: 32),
 
-              // Full name
               _buildLabel('FULL NAME', 'الاسم الكامل'),
               const SizedBox(height: 8),
               _buildTextField(
@@ -149,7 +153,6 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
               ),
               const SizedBox(height: 20),
 
-              // Phone number
               _buildLabel('PHONE NUMBER', 'رقم الهاتف'),
               const SizedBox(height: 8),
               _buildTextField(
@@ -163,7 +166,7 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
 
               Row(
                 children: [
-                  // Date picker
+
                   Expanded(
                     flex: 3,
                     child: Column(
@@ -200,7 +203,7 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  // Guests
+
                   Expanded(
                     flex: 2,
                     child: Column(
@@ -242,13 +245,29 @@ class _BookingModalWidgetState extends State<BookingModalWidget> {
               ),
               const SizedBox(height: 40),
 
-              // Confirm button
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      final bookingData = {
+                        'name': _nameController.text,
+                        'phone': _phoneController.text,
+                        'place': widget.placeName,
+                        'date': intl.DateFormat('yyyy-MM-dd').format(_selectedDate),
+                        'guests': _numberOfGuests,
+                        'partner_id': widget.partnerId,
+                        'place_id': widget.placeId,
+                      };
+                      
+                      // Save to Supabase via Provider
+                      try {
+                        context.read<PartnerProvider>().addBooking(bookingData);
+                      } catch (e) {
+                        debugPrint('Supabase Add Booking Error: $e');
+                      }
+
                       final booking = Booking(
                         placeName: widget.placeName,
                         category: widget.category,

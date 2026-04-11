@@ -8,6 +8,7 @@ class UserModel {
   final int rank;
   final List<String> unlockedAchievements;
   final List<String> firstDiscoveries;
+  final bool isGuide;
 
   UserModel({
     required this.id,
@@ -19,6 +20,7 @@ class UserModel {
     this.rank = 0,
     required this.unlockedAchievements,
     required this.firstDiscoveries,
+    this.isGuide = false,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class UserModel {
       rank: json['rank'] ?? 0,
       unlockedAchievements: List<String>.from(json['unlockedAchievements'] ?? []),
       firstDiscoveries: List<String>.from(json['firstDiscoveries'] ?? []),
+      isGuide: json['isGuide'] ?? false,
     );
   }
 
@@ -46,6 +49,7 @@ class UserModel {
       'rank': rank,
       'unlockedAchievements': unlockedAchievements,
       'firstDiscoveries': firstDiscoveries,
+      'isGuide': isGuide,
     };
   }
 
@@ -56,6 +60,7 @@ class UserModel {
     List<String>? unlockedAchievements,
     List<String>? firstDiscoveries,
     String? avatarUrl,
+    bool? isGuide,
   }) {
     return UserModel(
       id: id,
@@ -67,6 +72,7 @@ class UserModel {
       rank: rank ?? this.rank,
       unlockedAchievements: unlockedAchievements ?? this.unlockedAchievements,
       firstDiscoveries: firstDiscoveries ?? this.firstDiscoveries,
+      isGuide: isGuide ?? this.isGuide,
     );
   }
 }

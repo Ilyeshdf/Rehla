@@ -111,7 +111,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Glow
+
           Positioned(
             top: MediaQuery.of(context).size.height * 0.2,
             left: 0,
@@ -137,7 +137,7 @@ class _LoadingScreenState extends State<LoadingScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Animated AI Core
+
                 AnimatedBuilder(
                   animation: _pulseController,
                   builder: (context, child) {
@@ -149,7 +149,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      // Rotating ring
+
                       AnimatedBuilder(
                         animation: _rotationController,
                         builder: (context, child) {
@@ -182,7 +182,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                           );
                         },
                       ),
-                      // Inner core
+
                       Container(
                         width: 100,
                         height: 100,
@@ -208,7 +208,6 @@ class _LoadingScreenState extends State<LoadingScreen>
                 ),
                 const SizedBox(height: 64),
 
-                // Message
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 500),
                   child: Text(
@@ -234,7 +233,6 @@ class _LoadingScreenState extends State<LoadingScreen>
                 ),
                 const SizedBox(height: 48),
 
-                // Pulse indicator
                 SizedBox(
                   width: 120,
                   height: 2,

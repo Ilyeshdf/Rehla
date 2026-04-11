@@ -21,22 +21,22 @@ class LeaderboardProvider extends ChangeNotifier {
       final List<dynamic> decoded = jsonDecode(jsonString);
       _entries = decoded.map((e) => LeaderboardEntryModel.fromJson(e)).toList();
     } catch (e) {
-      // Fallback mock data if file not found
+
       _entries = [
         LeaderboardEntryModel(rank: 1, userId: 'u1', username: 'Ahmed_Traveler', wilaya: 'Algiers', xp: 4500, placesUnlocked: 24, badge: 'Veteran'),
         LeaderboardEntryModel(rank: 2, userId: 'u2', username: 'Sara_Explores', wilaya: 'Bejaia', xp: 3800, placesUnlocked: 18, badge: 'Explorer'),
         LeaderboardEntryModel(rank: 3, userId: 'u3', username: 'Dahmane_G', wilaya: 'Oran', xp: 3200, placesUnlocked: 15, badge: 'Nomad'),
       ];
     }
-    
+
     _isLoading = false;
-    // Use microtask to avoid notifying during build phase
+
     Future.microtask(() => notifyListeners());
   }
 
   void insertCurrentUser(UserModel user) {
     _entries.removeWhere((e) => e.userId == user.id);
-    
+
     final entry = LeaderboardEntryModel(
       rank: 0,
       userId: user.id,
@@ -46,10 +46,10 @@ class LeaderboardProvider extends ChangeNotifier {
       placesUnlocked: user.unlockedAchievements.length,
       badge: user.level,
     );
-    
+
     _entries.add(entry);
     _entries.sort((a, b) => b.xp.compareTo(a.xp));
-    
+
     for (int i = 0; i < _entries.length; i++) {
         final old = _entries[i];
         _entries[i] = LeaderboardEntryModel(
@@ -62,7 +62,7 @@ class LeaderboardProvider extends ChangeNotifier {
           badge: old.badge,
         );
     }
-    
+
     notifyListeners();
   }
 }

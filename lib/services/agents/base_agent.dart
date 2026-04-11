@@ -11,13 +11,13 @@ abstract class BaseAgent {
   Future<String> process(String input) async {
     try {
       final response = await http.post(
-        Uri.parse(AppConstants.groqApiUrl),
+        Uri.parse(AppConstants.grokApiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${AppConstants.groqApiKey}',
+          'Authorization': 'Bearer ${AppConstants.grokApiKey}',
         },
         body: jsonEncode({
-          'model': AppConstants.groqModel,
+          'model': AppConstants.grokModel,
           'messages': [
             {
               'role': 'system',

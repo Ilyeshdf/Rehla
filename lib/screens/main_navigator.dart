@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../config/constants.dart';
@@ -18,19 +17,18 @@ class MainNavigator extends StatefulWidget {
 }
 
 class _MainNavigatorState extends State<MainNavigator> {
-  // Navigation is now managed via NavigationProvider
 
   final List<Widget> _screens = [
     const SocialFeedScreen(),
     const HomeScreen(),
-    const JourneyTrackerScreen(), // Live Tracking & Safety Center
+    const JourneyTrackerScreen(), 
     const ExplorerProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final nav = context.watch<NavigationProvider>();
-    
+
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(

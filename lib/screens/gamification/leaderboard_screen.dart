@@ -29,10 +29,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
       backgroundColor: AppConstants.backgroundDark,
       body: CustomScrollView(
         slivers: [
-          // Header
+
           SliverToBoxAdapter(child: _buildHeader()),
 
-          // Tab Bar
           SliverToBoxAdapter(child: _buildTabBar()),
 
           SliverFillRemaining(
@@ -55,7 +54,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
 
                 return Column(
                   children: [
-                    // Podium Top 3
+
                     if (leaderboard.entries.length >= 3)
                       Container(
                         padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
@@ -74,7 +73,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
                         color: AppConstants.divider.withValues(alpha: 0.5),
                         height: 1),
 
-                    // Rest of Leaderboard
                     Expanded(
                       child: ListView.builder(
                         padding: const EdgeInsets.only(bottom: 100),
@@ -233,10 +231,23 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
       color: AppConstants.backgroundCard,
       child: Row(
         children: [
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppConstants.accentTeal.withValues(alpha: 0.3)),
+            ),
+            child: ClipOval(
+              child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
+            ),
+          ),
+          const SizedBox(width: 8),
           Text(
             'RIHLA',
             style: GoogleFonts.poppins(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.w800,
               color: AppConstants.textPrimary,
               letterSpacing: 2,
@@ -293,13 +304,12 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        // Crown for first place
+
         if (rank == 1)
           const Icon(Icons.military_tech,
               color: AppConstants.accentGold, size: 28),
         if (rank == 1) const SizedBox(height: 4),
 
-        // Avatar
         Container(
           width: rank == 1 ? 56 : 44,
           height: rank == 1 ? 56 : 44,

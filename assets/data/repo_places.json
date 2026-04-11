@@ -1,0 +1,557 @@
+[
+  {
+    "id": "1",
+    "name": "Pont Sidi M'Cid",
+    "wilaya": "Contantine",
+    "location":{
+        "Latitude" : 36.37401673269284,    
+        "Longitude" : 6.614506192047935
+    },                       
+    "type": "monument",
+    "description": "Called the suspension bridge, it is the most impressive of the bridges. Inaugurated on April 19, 1912, it is 160 meters long and rises 175 meters above the waters of the Ouest Rhumel",
+    "rating": 4.7,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/1_Pont_de_Sidi_M%27Cid.JPG/500px-1_Pont_de_Sidi_M%27Cid.JPG",
+    "isOfficial": true
+  },
+   {
+    "id": "2",
+    "name": "Musée Cirta",
+    "wilaya": "Contantine",
+    "location":{
+        "Latitude" : 36.36330770102954,    
+        "Longitude" : 6.607352683874253
+    },                       
+    "type": "monument",
+    "description": "The Cirta National Museum is a museum in Constantine, Algeria, that showcases the city’s past from prehistory through the Numidian, Roman, Hafsid, Ottoman, and colonial periods, as well as artifacts from Tiddis, the Kalâa of the Beni Hammad, and other historical regions of the country",
+    "rating": 4.4,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Mus%C3%A9e_national_Cirta_01.jpg/1920px-Mus%C3%A9e_national_Cirta_01.jpg",
+    "schedule": [
+      {
+        "day": "Friday",
+        "openings": ["10:00-12:00", "14:00-17:00"]
+      },
+      {
+        "day": "Saturday",
+        "openings": ["10:00-12:00", "13:00-17:00"]
+      },
+      {
+        "day": "Sunday",
+        "openings": []
+      },
+      {
+        "day": "Monday",
+        "openings": ["08:30-16:30"]
+      },
+      {
+        "day": "Tuesday",
+        "openings": ["08:30-16:30"]
+      },
+      {
+        "day": "Wednesday",
+        "openings": ["08:30-16:30"]
+      },
+      {
+        "day": "Thursday",
+        "openings": ["08:30-16:30"]
+      }
+    ],
+    "isOfficial": true
+  },
+  {
+    "id": "3",
+    "name": "Palais Ahmed Bey",
+    "wilaya": "Contantine",
+    "location":{
+        "Latitude" : 36.36834944239822,    
+        "Longitude" : 6.611581170112848
+    },                       
+    "type": "monument",
+    "description": "The Palace of Ahmed Bey (Arabic: قصر أحمد باي; Tamazight: ⴰⴽⵙⵓⵔ ⴰⵃⵎⴰⴷ ⴱⴰⵢ) is one of the historic palaces in Constantine, Algeria. It is one of the best-preserved examples of architecture from the Beylik period.",
+    "rating": 4.5,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Palais_ahmed_bey.jpg/960px-Palais_ahmed_bey.jpg",
+    "schedule": [
+      {
+        "day": "Friday",
+        "openings": ["10:00-12:00", "14:00-17:00"]
+      },
+      {
+        "day": "Saturday",
+        "openings": ["10:00-12:00", "13:00-17:00"]
+      },
+      {
+        "day": "Sunday",
+        "openings": []
+      },
+      {
+        "day": "Monday",
+        "openings": ["08:30-16:30"]
+      },
+      {
+        "day": "Tuesday",
+        "openings": ["08:30-16:30"]
+      },
+      {
+        "day": "Wednesday",
+        "openings": ["08:30-16:30"]
+      },
+      {
+        "day": "Thursday",
+        "openings": ["08:30-16:30"]
+      }
+    ],
+    "phoneNumber": "031921938",
+    "isOfficial": true
+  },
+  {
+    "id": "4",
+    "name": "Hotel ibis Constantine",
+    "wilaya": "Constantine",
+    "location": {
+        "Latitude": 36.365886418977944,
+        "Longitude": 6.608564872769507
+    },
+    "type": "hotel",
+    "description": "A comfortable hotel, offering clean rooms, friendly service, and essential amenities. Great value and convenient location for a pleasant stay",
+    "rating": 4.0,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Palais_ahmed_bey.jpg/960px-Palais_ahmed_bey.jpg",
+    "currency": "DZD",
+    "prices": [
+            {
+            "room_category": "Single",
+            "occupancy": 1,
+            "bed_type": "1 Single Bed",
+            "breakfast_included": true,
+            "cancellation_grace_period_days": 5,
+            "total_price_dzd": 11200.0
+            },
+            {
+            "room_category": "Couple",
+            "occupancy": 2,
+            "bed_type": "1 Queen Bed",
+            "breakfast_included": true,
+            "cancellation_grace_period_days": 5,
+            "total_price_dzd": 12950.0
+            },
+            {
+            "room_category": "Double",
+            "occupancy": 2,
+            "bed_type": "2 Single Beds",
+            "breakfast_included": true,
+            "cancellation_grace_period_days": 5,
+            "total_price_dzd": 13400.0
+            }
+        ],
+        "schedule": [
+            { "day": "Friday", "openings": ["10:00-12:00", "14:00-17:00"] },
+            { "day": "Saturday", "openings": ["10:00-12:00", "13:00-17:00"] },
+            { "day": "Sunday", "openings": [] },
+            { "day": "Monday", "openings": ["08:30-16:30"] },
+            { "day": "Tuesday", "openings": ["08:30-16:30"] },
+            { "day": "Wednesday", "openings": ["08:30-16:30"] },
+            { "day": "Thursday", "openings": ["08:30-16:30"] }
+        ],
+        "phoneNumber": "031992000"
+    },
+    {
+        "id": "5",
+        "name": "El Bey Hotel Constantine",
+        "wilaya": "Constantine",
+        "location": {
+            "Latitude": 36.33860333975321,
+            "Longitude": 6.651064943504951
+        },
+        "type": "hotel",
+        "description": "A comfortable hotel, offering clean rooms, friendly service, and essential amenities. Great value and convenient location for a pleasant stay",
+        "rating": 4.0,
+        "img": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/388412961.jpg?k=7f749cef99d20649dba6af219840073f06e9b4e95fb696e8770d9f1da72c3b23&o=",
+        "currency": "DZD",
+        "prices": [
+            {
+                "room_category": "Single Standard",
+                "occupancy": 1,
+                "bed_type": "1 Single Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 10150.0
+            },
+            {
+                "room_category": "Double / Twin",
+                "occupancy": 2,
+                "bed_type": "2 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 11375.0
+            },
+            {
+                "room_category": "Triple",
+                "occupancy": 3,
+                "bed_type": "3 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 13160.0
+            },
+            {
+                "room_category": "Suite Double",
+                "occupancy": 2,
+                "bed_type": "1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 20045.0
+            },
+            {
+                "room_category": "Suite Single",
+                "occupancy": 1,
+                "bed_type": "1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 17460.0
+            }
+        ],
+            "phoneNumber": "+213561927334"
+    },
+
+    {
+        "id": "6",
+        "name": "Dortoir 25 Constantine",
+        "wilaya": "Constantine",
+        "location": {
+            "Latitude": 36.36799756833873 ,
+            "Longitude": 6.612647327361405
+        },
+        "type": "hotel",
+        "description": "A comfortable hotel, offering clean rooms, friendly service, and essential amenities. Great value and convenient location for a pleasant stay",
+        "rating": 4.7,
+        "price": [
+            {"label": "Park Entry", "amount": 200},
+            {"label": "Standard Ride Ticket", "amount": 300},
+            {"label": "Premium Ride Ticket", "amount": 500},
+            {"label": "Unlimited Pass", "amount": 2500}
+        ],
+        "img":"https://scontent.fczl2-1.fna.fbcdn.net/v/t39.30808-6/474105034_122150632334492017_1851652546456396597_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=7b2446&_nc_ohc=zdrdLYp_Ec0Q7kNvwHXwykp&_nc_oc=AdrARkTazDnYwdAtUKYFp8KYgLa5hw4FHwR1VNf6Bw4sOYlc1No0MpnvoEQqSrSimGg&_nc_zt=23&_nc_ht=scontent.fczl2-1.fna&_nc_gid=Bf8uemG1qk9Ka950_eqKBA&_nc_ss=7a389&oh=00_Af3Yn5nhFTOta4vsyANlLtbD3CgD94EMYsAwoDdE8qAwJA&oe=69DF0E34",
+        "currency": "DZD",
+        "prices": [
+            {
+                "room_category": "Double Room",
+                "occupancy": 2,
+                "bed_type": "2 Single Beds or 1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 5055.0
+            },
+            {
+                "room_category": "Double Room",
+                "occupancy": 2,
+                "bed_type": "2 Single Beds or 1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 5550.0
+            },
+            {
+                "room_category": "Single Room",
+                "occupancy": 1,
+                "bed_type": "1 Single Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 4260.0
+            },
+            {
+                "room_category": "Single Room",
+                "occupancy": 1,
+                "bed_type": "1 Single Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 4700.0
+            },
+            {
+                "room_category": "Quadruple Room",
+                "occupancy": 4,
+                "bed_type": "5 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 6720.0
+            },
+            {
+                "room_category": "Quadruple Room",
+                "occupancy": 4,
+                "bed_type": "5 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 7400.0
+            }
+        ],
+            "phoneNumber": "+213550504481"
+    },
+
+    {
+        "id": "7",
+        "name": "Magic Land",
+        "wilaya": "Constantine",
+        "location": {
+            "latitude": 36.33534842678388,
+            "longitude": 6.590896805225898
+        },
+        "type": "fun activities",
+        "description": "A comfortable amusement park, offering exciting rides, friendly service, and a pleasant atmosphere. Great value and convenient location for a delightful experience",
+        "rating": 4.2,
+        "price": [
+            {"label": "Park Entry", "amount": 200},
+            {"label": "Standard Ride Ticket", "amount": 300},
+            {"label": "Premium Ride Ticket", "amount": 500},
+            {"label": "Unlimited Pass", "amount": 2500}
+        ],
+        "img": "https://res.cloudinary.com/demy0ckk2/image/upload/v1774249062/winrouh/activities/activity_1638.jpg",
+        "schedule": {
+            "Friday": ["14:00-22:00"],
+            "Saturday": ["09:00-22:00"],
+            "Sunday": ["09:30-22:00"],
+            "Monday": ["09:30-22:00"],
+            "Tuesday": ["09:30-22:00"],
+            "Wednesday": ["09:00-22:00"],
+            "Thursday": ["09:30-22:00"]
+        },
+        "phoneNumber": "+213797253329"
+    },
+
+    {
+        "id": "8",
+        "name": "Bardo Parc ",
+        "wilaya": "Constantine",
+        "location": {
+            "latitude": 36.36372433225906,
+            "longitude": 6.611584875667462
+        },
+        "type": "fun activities",
+        "description": "A comfortable amusement park, offering exciting rides, friendly service, and a pleasant atmosphere. Great value and convenient location for a delightful experience",
+        "rating": 4.3 ,
+        "price": [
+            {"label": "Park Entry", "amount": 200},
+            {"label": "Standard Ride Ticket", "amount": 300},
+            {"label": "Premium Ride Ticket", "amount": 500},
+            {"label": "Unlimited Pass", "amount": 2500}
+        ],
+        "img": "https://res.cloudinary.com/demy0ckk2/image/upload/v1774249062/winrouh/activities/activity_1638.jpg",
+        "schedule": {
+            "Friday": ["10:00-22:00"],
+            "Saturday": ["10:00-22:00"],
+            "Sunday": ["10:00-22:00"],
+            "Monday": ["10:00-22:00"],
+            "Tuesday": ["10:00-22:00"],
+            "Wednesday": ["10:00-22:00"],
+            "Thursday": ["10:00-22:00"]
+        },
+        "phoneNumber": "+213717653429"
+
+    },
+
+    {
+        "id": "9",
+        "name": "Snober Land",
+        "wilaya": "Constantine",
+        "location": {
+            "latitude": 36.26704900611503,
+            "longitude": 6.690028043905851
+        },
+        "type": "fun activities",
+        "description": "A popular family amusement park in Constantine, featuring a variety of rides from carousels for kids to thrill rides for adults. It offers a safe environment, green spaces, and snack bars for a perfect family outing.",
+        "rating": 4.2,
+        "price": [
+            {"label": "Park Entry", "amount": 200},
+            {"label": "Standard Ride Ticket", "amount": 300},
+            {"label": "Premium Ride Ticket", "amount": 500},
+            {"label": "Unlimited Pass", "amount": 2500}
+        ],
+        "currency": "DZD",
+        "img": "https://res.cloudinary.com/demy0ckk2/image/upload/v1774249062/winrouh/activities/activity_1638.jpg",
+        "schedule": {
+            "Friday": ["11:00-22:00"],
+            "Saturday": ["11:00-22:00"],
+            "Sunday": ["11:00-22:00"],
+            "Monday": ["11:00-22:00"],
+            "Tuesday": ["11:00-22:00"],
+            "Wednesday": ["11:00-22:00"],
+            "Thursday": ["11:00-22:00"]
+        },
+        "phoneNumber": "+213797253329"
+    },
+
+
+    {
+        "id": "10",
+        "name": "Tassili azjjer",
+        "wilaya": "Djanet",
+        "location":{
+            "Latitude" : 26.088120034174324,   
+            "Longitude" : 8.057545417437371
+        },                       
+        "type": "monument",
+        "description": "A sprawling plateau offering lunar-like rocky scenery and ancient rock art, ideal for trekking and camping under the stars",
+        "rating": 4.5,
+        "img": "https://m-culture.gov.dz/images/tassili.jpg",
+        "isOfficial": true
+    },
+   {
+        "id": "11",
+        "name": "مقهى الطاسيلي Tassili cafeteria",
+        "wilaya": "Djanet",
+        "location":{
+            "Latitude" : 24.91865236521782,    
+            "Longitude" : 9.452342632673092
+        },                       
+        "type": "restaurant",
+        "description": "A peaceful stop in the heart of Tassili. Enjoy a traditional tea surrounded by breathtaking lunar landscapes and prehistoric wonders. The perfect place to relax after a long hike",
+        "rating": 4.4,
+        "img": "https://scontent.fczl2-1.fna.fbcdn.net/v/t51.75761-15/470813082_18472762261027100_8298094821011504019_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=100&ccb=1-7&_nc_sid=13d280&_nc_ohc=B-2oBPkgEeEQ7kNvwFi2m3U&_nc_oc=AdobSnee0j2Pf8-ULBwgi-3Mr2i9XpzVD5D1NRDVMcbvo7AgQ5-u4ds6l3ibZnflB7U&_nc_zt=23&_nc_ht=scontent.fczl2-1.fna&_nc_gid=BtPossEy1MXEc7XeGHS_Iw&_nc_ss=7a389&oh=00_Af2y-YjwEt925fsTBL3GjM7z4XC4KSpu3FKqq2qtBzb1iA&oe=69DF0744"
+  },
+  {
+    "id": "12",
+    "name": "Hotel ElHadj Bouamama Salah N'Azdjer",
+    "wilaya": "Djanet",
+    "location":{
+        "Latitude" : 26.503839282292162,
+        "Longitude" : 8.480189396989651
+    },                       
+    "type": "hotel",
+    "description": "Your home in the heart of Djanet. We offer comfortable rooms, traditional hospitality, and the perfect base for your desert adventures. Relax and enjoy the beauty of the Sahara with us",
+    "rating": 4.0,
+    "img": "https://aton.com.tr/wp-content/uploads/2020/03/djanet2.jpg",
+    "currency": "DZD",
+        "prices": [
+            {
+                "room_category": "Double Room (Non-refundable)",
+                "occupancy": 2,
+                "bed_type": "2 Single Beds or 1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 5055.0
+            },
+            {
+                "room_category": "Double Room",
+                "occupancy": 2,
+                "bed_type": "2 Single Beds or 1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 5550.0
+            },
+            {
+                "room_category": "Single Room",
+                "occupancy": 1,
+                "bed_type": "1 Single Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 4260.0
+            },
+            {
+                "room_category": "Single Room",
+                "occupancy": 1,
+                "bed_type": "1 Single Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 4700.0
+            },
+            {
+                "room_category": "Quadruple Room",
+                "occupancy": 4,
+                "bed_type": "5 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 6720.0
+            },
+            {
+                "room_category": "Quadruple Room",
+                "occupancy": 4,
+                "bed_type": "5 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 7400.0
+            }
+        ],
+    "phoneNumber": "044447380"
+  },
+  {
+    "id": "13",
+    "name": "Hotel Tahat",
+    "wilaya": "Djanet",
+    "location": {
+        "Latitude": 26.556627714537687,
+        "Longitude": 8.49099235255171
+    },
+    "type": "hotel",
+    "description": "A comfortable hotel, offering clean rooms, friendly service, and essential amenities. Great value and convenient location for a pleasant stay",
+    "rating": 4.0,
+    "img": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/73/4e/b0/hotel-tahat.jpg?w=1400&h=800&s=1",
+    "currency": "DZD",
+    "prices": [
+            {
+                "room_category": "Double Room (Non-refundable)",
+                "occupancy": 2,
+                "bed_type": "2 Single Beds or 1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 5055.0
+            },
+            {
+                "room_category": "Double Room",
+                "occupancy": 2,
+                "bed_type": "2 Single Beds or 1 Double Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 5550.0
+            },
+            {
+                "room_category": "Single Room",
+                "occupancy": 1,
+                "bed_type": "1 Single Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 4260.0
+            },
+            {
+                "room_category": "Single Room",
+                "occupancy": 1,
+                "bed_type": "1 Single Bed",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 4700.0
+            },
+            {
+                "room_category": "Quadruple Room",
+                "occupancy": 4,
+                "bed_type": "5 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 0,
+                "total_price_dzd": 6720.0
+            },
+            {
+                "room_category": "Quadruple Room",
+                "occupancy": 4,
+                "bed_type": "5 Single Beds",
+                "breakfast_included": true,
+                "cancellation_grace_period_days": 2,
+                "total_price_dzd": 7400.0
+            }
+        ],
+        "phoneNumber": "031992000"
+    },
+
+    {
+        "id": "14",
+        "name": "Sahara Quad",
+        "wilaya": "Djanet",
+        "location": {
+            "Latitude": 26.839599111124688,
+            "Longitude": 7.893894917625267
+        },
+        "type": "fun activities",
+        "description": "A comfortable hotel, offering clean rooms, friendly service, and essential amenities. Great value and convenient location for a pleasant stay",
+        "rating": 4.0,
+        "currency": "DZD",
+        "price": [
+            {"label": "1 Hour Solo", "amount": 3500},
+            {"label": "2 Hours Solo", "amount": 6000},
+            {"label": "Passenger Supplement", "amount": 1500}
+        ],
+        "img": "https://www.mosaicnorthafrica.com/wp-content/uploads/2017/01/ksar-ghilane-quad-biking-to-fortress.jpg",
+        "phoneNumber": "+213663957334"
+    }
+
+]

@@ -11,7 +11,7 @@ class JourneyProvider extends ChangeNotifier {
   double _elevationGain = 0.0;
   List<Position> _path = [];
   Timer? _timer;
-  
+
   List<String> _photos = [];
 
   bool get isActive => _isActive;
@@ -20,20 +20,22 @@ class JourneyProvider extends ChangeNotifier {
   double get elevationGain => _elevationGain;
   List<Position> get path => _path;
   String? get placeName => _path.isNotEmpty ? 'مسار ${path.length}' : null;
+  String get journeyId => 'j_${DateTime.now().millisecondsSinceEpoch}';
+  String get difficulty => _distanceKm > 10 ? 'صعب' : (_distanceKm > 4 ? 'متوسط' : 'سهل');
 
   StreamSubscription<Position>? _positionStream;
 
   void startJourney() async {
     _timer?.cancel();
     _positionStream?.cancel();
-    
+
     _isActive = true;
     _duration = Duration.zero;
     _distanceKm = 0.0;
     _elevationGain = 0.0;
     _path = [];
     _photos = [];
-    
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _duration += const Duration(seconds: 1);
       notifyListeners();
@@ -54,7 +56,7 @@ class JourneyProvider extends ChangeNotifier {
             position.latitude, position.longitude
           );
           _distanceKm += (dist / 1000);
-          
+
           final altDiff = position.altitude - last.altitude;
           if (altDiff > 0) {
             _elevationGain += altDiff;
@@ -85,8 +87,7 @@ class JourneyProvider extends ChangeNotifier {
     _positionStream?.cancel();
     _isActive = false;
     notifyListeners();
-    
-    // Create journey record
+
     return JourneyModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       userId: userId,

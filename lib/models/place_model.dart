@@ -162,6 +162,12 @@ class Guide {
   final String phone;
   final String schedule;
   final int basePrice;
+  final String? bio;
+  final String? photoUrl;
+  final int? reviewsCount;
+  final List<String>? specialties;
+  final String? wilaya;
+  final bool isVerified;
 
   Guide({
     required this.id,
@@ -171,6 +177,12 @@ class Guide {
     required this.phone,
     required this.schedule,
     required this.basePrice,
+    this.bio,
+    this.photoUrl,
+    this.reviewsCount,
+    this.specialties,
+    this.wilaya,
+    this.isVerified = false,
   });
 
   factory Guide.fromJson(Map<String, dynamic> json) {
@@ -182,7 +194,31 @@ class Guide {
       phone: json['phone'] ?? '',
       schedule: json['schedule'] ?? '',
       basePrice: json['base_price'] ?? 0,
+      bio: json['bio'] ?? json['description'],
+      photoUrl: json['photo_url'] ?? json['image_url'],
+      reviewsCount: json['reviews_count'],
+      specialties: json['specialties'] != null ? List<String>.from(json['specialties']) : null,
+      wilaya: json['wilaya'],
+      isVerified: json['is_verified'] ?? false,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'languages': languages,
+      'rating': rating,
+      'phone': phone,
+      'schedule': schedule,
+      'base_price': basePrice,
+      'bio': bio,
+      'photo_url': photoUrl,
+      'reviews_count': reviewsCount,
+      'specialties': specialties,
+      'wilaya': wilaya,
+      'is_verified': isVerified,
+    };
   }
 }
 

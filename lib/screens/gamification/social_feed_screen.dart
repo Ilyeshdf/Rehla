@@ -5,6 +5,7 @@ import '../../config/constants.dart';
 import '../../providers/feed_provider.dart';
 import '../../models/post_model.dart';
 import 'leaderboard_screen.dart';
+import '../../widgets/adaptive_image.dart';
 
 class SocialFeedScreen extends StatefulWidget {
   const SocialFeedScreen({super.key});
@@ -15,7 +16,7 @@ class SocialFeedScreen extends StatefulWidget {
 
 class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _selectedBuyerType = 0; // 0: All, 1: Individual, 2: Group, 3: Company
+  int _selectedBuyerType = 0; 
 
   @override
   void initState() {
@@ -96,7 +97,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   Widget _buildMarketplace() {
     return Column(
       children: [
-        // Buyer Type Filter
+
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -109,7 +110,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
             ],
           ),
         ),
-        
+
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.all(16),
@@ -173,7 +174,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-              child: Image.network(item['image'], fit: BoxFit.cover, width: double.infinity),
+              child: AdaptiveImage(imagePath: item['image'], fit: BoxFit.cover, width: double.infinity),
             ),
           ),
           Padding(
@@ -233,7 +234,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
+
           Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -250,14 +251,12 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
               ],
             ),
           ),
-          // Photo
+
           AspectRatio(
             aspectRatio: 1.0,
             child: post.photoUrl.isNotEmpty
                 ? InteractiveViewer(
-                    child: (post.photoUrl.startsWith('http') || post.photoUrl.startsWith('blob:'))
-                        ? Image.network(post.photoUrl, fit: BoxFit.cover, width: double.infinity)
-                        : Image.network(post.photoUrl, fit: BoxFit.cover, width: double.infinity, errorBuilder: (c, e, s) => const Icon(Icons.broken_image)),
+                    child: AdaptiveImage(imagePath: post.photoUrl, fit: BoxFit.cover, width: double.infinity),
                   )
                 : Container(
                     color: AppConstants.backgroundElevated,
@@ -267,7 +266,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                     ),
                   ),
           ),
-          // Actions/Caption
+
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(

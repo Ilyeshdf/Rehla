@@ -6,7 +6,7 @@ import 'place_card_widget.dart';
 
 class DayCardWidget extends StatelessWidget {
   final ItineraryDay day;
-  final Function(String placeName, String category) onBook;
+  final Function(String placeName, String category, {String? pid, String? plid}) onBook;
   final Set<String> visitedPlaces;
   final Function(String placeKey) onToggleVisited;
 
@@ -28,7 +28,7 @@ class DayCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Day indicator with progress
+
           Row(
             children: [
               Container(
@@ -50,35 +50,32 @@ class DayCardWidget extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              // Progress indicator
+
               _buildDayProgress(),
             ],
           ),
           const SizedBox(height: 24),
 
-          // Morning card
           PlaceCardWidget(
             timeSlot: day.morning,
             timeOfDay: 'morning',
-            onBook: () => onBook(day.morning.place, day.morning.category),
+            onBook: () => onBook(day.morning.place, day.morning.category, pid: day.morning.partnerId, plid: day.morning.placeId),
             isVisited: visitedPlaces.contains(_placeKey(day.day, 'morning')),
             onToggleVisited: () => onToggleVisited(_placeKey(day.day, 'morning')),
           ),
 
-          // Afternoon card
           PlaceCardWidget(
             timeSlot: day.afternoon,
             timeOfDay: 'afternoon',
-            onBook: () => onBook(day.afternoon.place, day.afternoon.category),
+            onBook: () => onBook(day.afternoon.place, day.afternoon.category, pid: day.afternoon.partnerId, plid: day.afternoon.placeId),
             isVisited: visitedPlaces.contains(_placeKey(day.day, 'afternoon')),
             onToggleVisited: () => onToggleVisited(_placeKey(day.day, 'afternoon')),
           ),
 
-          // Evening card
           PlaceCardWidget(
             timeSlot: day.evening,
             timeOfDay: 'evening',
-            onBook: () => onBook(day.evening.place, day.evening.category),
+            onBook: () => onBook(day.evening.place, day.evening.category, pid: day.evening.partnerId, plid: day.evening.placeId),
             isVisited: visitedPlaces.contains(_placeKey(day.day, 'evening')),
             onToggleVisited: () => onToggleVisited(_placeKey(day.day, 'evening')),
           ),

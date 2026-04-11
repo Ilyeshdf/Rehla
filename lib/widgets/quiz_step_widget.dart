@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../config/constants.dart';
 import '../models/quiz_model.dart';
+import '../providers/guide_provider.dart';
+import 'guide_card_widget.dart';
 
 class QuizStepWidget extends StatelessWidget {
   final int step;
@@ -135,7 +137,7 @@ class _DestinationStep extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'This wilaya is coming soon! Available now: Algiers & Bejaia.',
+                      'This wilaya is coming soon! Available now: Algiers, Bejaia, Constantine & Djanet.',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: AppConstants.accentGold,
@@ -626,58 +628,74 @@ class _InterestChip extends StatelessWidget {
   }
 }
 
-class _GuideStep extends StatelessWidget {
+class _GuideStep extends StatefulWidget {
+  @override
+  State<_GuideStep> createState() => _GuideStepState();
+}
+
+class _GuideStepState extends State<_GuideStep> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<GuideProvider>().loadGuides();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final quiz = context.watch<QuizProvider>();
+    final guideProvider = context.watch<GuideProvider>();
+    final availableGuides = guideProvider.getGuidesForWilaya(quiz.answers.destination);
+
     return _QuizStepLayout(
-      question: 'DO YOU WANT\nA GUIDE?',
-      questionAr: 'تحب دليل سياحي؟',
-      subtitle: 'OPTIONAL STEP',
+      question: 'PICK YOUR\nLOCAL GUIDE',
+      questionAr: 'اختر دليلك المحلي',
+      subtitle: availableGuides.isEmpty 
+        ? 'NO GUIDES AVAILABLE FOR ${quiz.answers.destination.toUpperCase()}'
+        : 'SELECT A GUIDE TO HELP YOU NAVIGATE',
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppConstants.backgroundCard,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: quiz.answers.wantsGuide
-                    ? AppConstants.accentTeal
-                    : AppConstants.divider,
-                width: quiz.answers.wantsGuide ? 2 : 1,
-              ),
-            ),
-            child: SwitchListTile(
-              title: Row(
-                children: [
-                  Icon(
-                    Icons.explore,
-                    color: quiz.answers.wantsGuide
-                        ? AppConstants.accentTeal
-                        : AppConstants.textTertiary,
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    'Yes, I want a guide',
-                    style: GoogleFonts.cairo(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: quiz.answers.wantsGuide
-                          ? AppConstants.accentTeal
-                          : AppConstants.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-              value: quiz.answers.wantsGuide,
-              onChanged: (val) => quiz.setWantsGuide(val),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
+          // "Skip/I don't want a guide" option
+          _SelectableCard(
+            icon: Icons.person_off_outlined,
+            label: 'Explore on my own',
+            isSelected: !quiz.answers.wantsGuide,
+            onTap: () {
+              quiz.setWantsGuide(false);
+              guideProvider.selectGuide(null);
+            },
+            isHorizontal: true,
           ),
+          const SizedBox(height: 24),
+          if (availableGuides.isNotEmpty) ...[
+            Text(
+              'AVAILABLE GUIDES',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: AppConstants.textTertiary,
+                letterSpacing: 1.5,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ...availableGuides.map((guide) => GuideCardWidget(
+                  guide: guide,
+                  isSelected: quiz.answers.selectedGuideId == guide.id,
+                  onSelect: () {
+                    quiz.setSelectedGuideId(guide.id);
+                    guideProvider.selectGuide(guide);
+                  },
+                )),
+          ],
+          if (guideProvider.isLoading && availableGuides.isEmpty)
+            const Padding(
+              padding: EdgeInsets.only(top: 40),
+              child: Center(child: CircularProgressIndicator(color: AppConstants.accentTeal)),
+            ),
         ],
       ),
     );
   }
 }
+

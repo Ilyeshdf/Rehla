@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../config/constants.dart';
+import '../widgets/adaptive_image.dart';
 import 'main_navigator.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -81,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background subtle glow
+
           Positioned(
             top: -100,
             right: -100,
@@ -99,12 +100,12 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-          
+
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Logo
+
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
@@ -113,24 +114,26 @@ class _SplashScreenState extends State<SplashScreen>
                       child: Opacity(
                         opacity: _fadeIn.value,
                         child: Container(
-                          width: 140,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           decoration: BoxDecoration(
-                            color: AppConstants.accentTeal.withValues(alpha: 0.1),
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(40),
-                            border: Border.all(color: AppConstants.accentTeal, width: 2),
+                            border: Border.all(color: AppConstants.accentTeal.withValues(alpha: 0.5), width: 1),
                             boxShadow: [
                               BoxShadow(
-                                color: AppConstants.accentTeal.withValues(alpha: 0.3),
+                                color: AppConstants.accentTeal.withValues(alpha: 0.2),
                                 blurRadius: 40,
                                 spreadRadius: 5,
                               ),
                             ],
                           ),
-                          child: const Icon(
-                            Icons.explore_outlined,
-                            size: 72,
-                            color: AppConstants.accentTeal,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: AdaptiveImage(
+                              imagePath: 'rihla_logo_v2_1775870345855.png',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
@@ -139,7 +142,6 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
                 const SizedBox(height: 48),
 
-                // App name
                 SlideTransition(
                   position: _slideUp,
                   child: FadeTransition(
@@ -166,8 +168,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                         ),
                         const SizedBox(height: 40),
-                        
-                        // Tagline
+
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                           decoration: BoxDecoration(

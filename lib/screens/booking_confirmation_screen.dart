@@ -60,7 +60,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Success Badge
+
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
@@ -109,7 +109,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen>
                       ),
                       const SizedBox(height: 40),
 
-                      // Confirmation Ticket
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -153,8 +152,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen>
                                 ],
                               ),
                             ),
-                            
-                            // Perforated line effect
+
                             Row(
                               children: List.generate(20, (i) => Expanded(
                                 child: Container(
@@ -184,7 +182,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen>
                       ),
                       const SizedBox(height: 48),
 
-                      // Actions
                       SizedBox(
                         width: double.infinity,
                         height: 56,

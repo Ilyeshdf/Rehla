@@ -23,13 +23,13 @@ class WhatsAppService {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
-        // Fallback to web WhatsApp
+
         final webUrl = 'https://wa.me/?text=$text';
         await launchUrl(Uri.parse(webUrl),
             mode: LaunchMode.externalApplication);
       }
     } catch (e) {
-      // Handle error silently
+
     }
   }
 
@@ -59,7 +59,7 @@ class WhatsAppService {
             mode: LaunchMode.externalApplication);
       }
     } catch (e) {
-      // Handle error silently
+
     }
   }
 }

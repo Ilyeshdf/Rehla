@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../config/constants.dart';
 import '../models/quiz_model.dart';
+import '../widgets/adaptive_image.dart';
 import 'quiz_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,11 +16,11 @@ class HomeScreen extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final bool isWide = constraints.maxWidth > 600;
-          
+
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              // Hero Bar
+
               SliverAppBar(
                 expandedHeight: isWide ? 300 : 200,
                 floating: false,
@@ -30,8 +31,8 @@ class HomeScreen extends StatelessWidget {
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        'https://images.unsplash.com/photo-1512401886107-73bed46f0fa0?auto=format&fit=crop&w=1200',
+                      AdaptiveImage(
+                        imagePath: 'rihla_hero_constantine_1775887303549.png',
                         fit: BoxFit.cover,
                       ),
                       Container(
@@ -94,15 +95,13 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
 
-                      // AI Planning Card (Primary Action)
                       _buildAIPlannerCard(context, isWide),
-                      
+
                       const SizedBox(height: 40),
-                      
+
                       _buildSectionTitle('TRAVEL CATEGORIES'),
                       const SizedBox(height: 20),
-                      
-                      // Responsive Grid for Categories
+
                       GridView.count(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -117,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                           _buildCategoryItem(Icons.verified_user, 'Verified Guides', Colors.greenAccent),
                         ],
                       ),
-                      
+
                       const SizedBox(height: 60),
                     ],
                   ),

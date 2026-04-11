@@ -65,7 +65,7 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Profile header
+
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
@@ -89,7 +89,7 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
                       ),
                       child: const Icon(
                         Icons.store,
-                        color: AppConstants.primaryGreenDark,
+                        color: AppConstants.textPrimary,
                         size: 32,
                       ),
                     ),
@@ -121,7 +121,6 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
               ),
               const SizedBox(height: 32),
 
-              // Business name
               _buildLabel('اسم النشاط التجاري'),
               const SizedBox(height: 8),
               TextFormField(
@@ -135,7 +134,6 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Category
               _buildLabel('التصنيف'),
               const SizedBox(height: 8),
               Container(
@@ -175,7 +173,6 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Wilaya
               _buildLabel('الولاية'),
               const SizedBox(height: 8),
               Container(
@@ -215,7 +212,6 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Description
               _buildLabel('الوصف'),
               const SizedBox(height: 8),
               TextFormField(
@@ -230,7 +226,6 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Price range
               _buildLabel('فئة الأسعار'),
               const SizedBox(height: 12),
               Row(
@@ -272,7 +267,6 @@ class _PartnerListingScreenState extends State<PartnerListingScreen> {
               ),
               const SizedBox(height: 36),
 
-              // Save button
               SizedBox(
                 width: double.infinity,
                 height: 56,

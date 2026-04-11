@@ -72,7 +72,6 @@ class QuizScreen extends StatelessWidget {
                 ),
               ),
 
-              // Bottom buttons
               Container(
                 padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
                 decoration: BoxDecoration(

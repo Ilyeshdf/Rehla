@@ -13,6 +13,7 @@ import '../providers/navigation_provider.dart';
 import '../services/guide_service.dart';
 import '../models/place_model.dart';
 import 'package:provider/provider.dart';
+import '../widgets/adaptive_image.dart';
 
 class ItineraryScreen extends StatefulWidget {
   final Itinerary itinerary;
@@ -32,7 +33,6 @@ class _ItineraryScreenState extends State<ItineraryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  /// Notion-like checklist — tracks visited places as "dayNum_timeOfDay"
   final Set<String> _visitedPlaces = {};
 
   @override
@@ -63,7 +63,7 @@ class _ItineraryScreenState extends State<ItineraryScreen>
   int get _totalPlaces => widget.itinerary.days.length * 3;
   int get _visitedCount => _visitedPlaces.length;
 
-  void _showBookingModal(String placeName, String category) {
+  void _showBookingModal(String placeName, String category, {String? partnerId, String? placeId}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -71,6 +71,8 @@ class _ItineraryScreenState extends State<ItineraryScreen>
       builder: (context) => BookingModalWidget(
         placeName: placeName,
         category: category,
+        partnerId: partnerId,
+        placeId: placeId,
         onConfirm: (booking) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
@@ -125,12 +127,12 @@ class _ItineraryScreenState extends State<ItineraryScreen>
                 background: Stack(
                   fit: StackFit.expand,
                   children: [
-                    // Background Image
-                    Image.network(
-                      'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=800&q=60',
+
+                    AdaptiveImage(
+                      imagePath: 'rihla_hero_tassili_1775887336822.png',
                       fit: BoxFit.cover,
                     ),
-                    // Gradient Overlay
+
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -144,7 +146,7 @@ class _ItineraryScreenState extends State<ItineraryScreen>
                         ),
                       ),
                     ),
-                    // Content
+
                     Positioned(
                       bottom: 80,
                       left: 24,
@@ -152,22 +154,44 @@ class _ItineraryScreenState extends State<ItineraryScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: AppConstants.accentTeal.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: AppConstants.accentTeal.withValues(alpha: 0.3)),
-                            ),
-                            child: Text(
-                              'CUSTOM ITINERARY',
-                              style: GoogleFonts.poppins(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: AppConstants.accentTeal,
-                                letterSpacing: 1.5,
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: AppConstants.accentTeal.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: AppConstants.accentTeal.withValues(alpha: 0.3)),
+                                ),
+                                child: Text(
+                                  'CUSTOM ITINERARY',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppConstants.accentTeal,
+                                    letterSpacing: 1.5,
+                                  ),
+                                ),
                               ),
-                            ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.white24),
+                                ),
+                                child: Text(
+                                  'POWERED BY GROK',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 12),
                           Text(
@@ -190,7 +214,7 @@ class _ItineraryScreenState extends State<ItineraryScreen>
                             ],
                           ),
                           const SizedBox(height: 10),
-                          // Progress bar
+
                           Row(
                             children: [
                               Expanded(
@@ -254,7 +278,7 @@ class _ItineraryScreenState extends State<ItineraryScreen>
                 children: widget.itinerary.days.map((day) {
                   return DayCardWidget(
                     day: day,
-                    onBook: _showBookingModal,
+                    onBook: (name, cat, {pid, plid}) => _showBookingModal(name, cat, partnerId: pid, placeId: plid),
                     visitedPlaces: _visitedPlaces,
                     onToggleVisited: _toggleVisited,
                   );
@@ -282,7 +306,7 @@ class _ItineraryScreenState extends State<ItineraryScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // START TRIP — only for WILD places
+
             if (hasWild)
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
@@ -390,62 +414,122 @@ class _ItineraryScreenState extends State<ItineraryScreen>
   Widget _buildGuideSection(BuildContext context) {
     return Container(
       color: AppConstants.backgroundDark,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
       child: FutureBuilder<List<Guide>>(
-        future: GuideService().getAllGuides(),
+        future: GuideService().getGuidesByWilaya(widget.itinerary.destination),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-          final guides = snapshot.data!;
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator(color: AppConstants.accentTeal));
+          }
+          final guides = snapshot.data ?? [];
           if (guides.isEmpty) return const SizedBox();
+          
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'AVAILABLE GUIDES FOR YOUR TRIP',
+                'RECOMMENDED LOCAL GUIDES',
                 style: GoogleFonts.poppins(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: AppConstants.accentTeal,
                   letterSpacing: 1.5,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               SizedBox(
-                height: 120,
+                height: 180,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: guides.length,
+                  clipBehavior: Clip.none,
                   itemBuilder: (context, index) {
                     final g = guides[index];
                     return Container(
-                      width: 280,
+                      width: 300,
                       margin: const EdgeInsets.only(right: 16),
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: AppConstants.backgroundCard,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(24),
                         border: Border.all(color: AppConstants.divider),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.2),
+                            blurRadius: 10,
+                            offset: const Offset(4, 4),
+                          )
+                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(g.name, style: GoogleFonts.cairo(fontWeight: FontWeight.w700, fontSize: 16, color: AppConstants.textPrimary)),
-                          Text('⭐ ${g.rating} - ${g.languages.join(", ")}', style: GoogleFonts.cairo(fontSize: 12, color: AppConstants.textSecondary)),
-                          const Spacer(),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppConstants.accentTeal.withValues(alpha: 0.1),
-                                foregroundColor: AppConstants.accentTeal,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          Row(
+                            children: [
+                              ClipOval(
+                                child: AdaptiveImage(
+                                  imagePath: g.photoUrl ?? 'https://ui-avatars.com/api/?name=${g.name}',
+                                  width: 48,
+                                  height: 48,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              onPressed: () {
-                                _showBookingModal(g.name, "guide");
-                              },
-                              child: Text('Book Guide', style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 12)),
-                            ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      g.name,
+                                      style: GoogleFonts.cairo(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      '⭐ ${g.rating} • ${g.languages.join(", ")}',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 11,
+                                        color: AppConstants.textSecondary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${g.basePrice} DA / day',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: AppConstants.accentTeal,
+                                ),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppConstants.accentTeal,
+                                  foregroundColor: AppConstants.backgroundDark,
+                                  elevation: 0,
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                                onPressed: () => _showBookingModal(g.name, "guide"),
+                                child: Text(
+                                  'BOOK',
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

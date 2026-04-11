@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../config/constants.dart';
+import '../../providers/partner_provider.dart';
 
 class PartnerBookingsScreen extends StatefulWidget {
   const PartnerBookingsScreen({super.key});
@@ -10,56 +12,18 @@ class PartnerBookingsScreen extends StatefulWidget {
 }
 
 class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
-  final List<Map<String, dynamic>> _bookings = [
-    {
-      'name': 'أحمد بن علي',
-      'date': '2026/04/15',
-      'guests': 2,
-      'status': 'جديد',
-      'place': 'فندق الأوراسي',
-    },
-    {
-      'name': 'فاطمة الزهراء',
-      'date': '2026/04/12',
-      'guests': 4,
-      'status': 'مؤكد',
-      'place': 'مطعم دار الجلد',
-    },
-    {
-      'name': 'يوسف حمادي',
-      'date': '2026/04/10',
-      'guests': 1,
-      'status': 'جديد',
-      'place': 'القصبة',
-    },
-    {
-      'name': 'مريم بوعلام',
-      'date': '2026/04/08',
-      'guests': 3,
-      'status': 'مؤكد',
-      'place': 'حديقة التجارب',
-    },
-    {
-      'name': 'كريم سعيدي',
-      'date': '2026/04/05',
-      'guests': 6,
-      'status': 'جديد',
-      'place': 'فندق الشيراتون',
-    },
-  ];
-
-  void _updateStatus(int index, String status) {
-    setState(() {
-      _bookings[index]['status'] = status;
-    });
+  Future<void> _updateStatus(dynamic id, String status) async {
+    await context.read<PartnerProvider>().updateBookingStatus(id, status);
+    
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          status == 'مؤكد' ? 'تم تأكيد الحجز' : 'تم رفض الحجز',
+          status == 'confirmed' ? 'تم تأكيد الحجز' : 'تم رفض الحجز',
           style: GoogleFonts.cairo(),
         ),
         backgroundColor:
-            status == 'مؤكد' ? AppConstants.success : AppConstants.error,
+            status == 'confirmed' ? AppConstants.success : AppConstants.error,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -68,6 +32,9 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final partner = context.watch<PartnerProvider>();
+    final bookings = partner.bookings;
+    
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -85,15 +52,25 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
             icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh, color: Colors.white),
+              onPressed: () => partner.fetchBookings(),
+            ),
+          ],
         ),
-        body: ListView.builder(
+        body: RefreshIndicator(
+          onRefresh: () => partner.fetchBookings(),
+          color: AppConstants.accentTeal,
+          child: partner.isLoading 
+            ? const Center(child: CircularProgressIndicator(color: AppConstants.accentTeal))
+            : ListView.builder(
           padding: const EdgeInsets.all(20),
-          itemCount: _bookings.length,
+          itemCount: bookings.length,
           itemBuilder: (context, index) {
-            final booking = _bookings[index];
-            final isNew = booking['status'] == 'جديد';
-            final isConfirmed = booking['status'] == 'مؤكد';
-
+            final booking = bookings[index];
+            final isNew = booking['status'] == 'pending';
+            final isConfirmed = booking['status'] == 'confirmed';
 
             return Container(
               margin: const EdgeInsets.only(bottom: 16),
@@ -118,7 +95,7 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header row
+
                   Row(
                     children: [
                       Container(
@@ -147,7 +124,7 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
                               ),
                             ),
                             Text(
-                              booking['place'],
+                              booking['place_id'] ?? 'Unknown Place',
                               style: GoogleFonts.cairo(
                                 fontSize: 13,
                                 color: AppConstants.textMedium,
@@ -170,12 +147,12 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          booking['status'],
+                          booking['status'] == 'pending' ? 'جديد' : (booking['status'] == 'confirmed' ? 'مؤكد' : 'مرفوض'),
                           style: GoogleFonts.cairo(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
                             color: isNew
-                                ? AppConstants.accentGoldDark
+                                ? AppConstants.accentGold
                                 : isConfirmed
                                     ? AppConstants.success
                                     : AppConstants.error,
@@ -186,7 +163,6 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Details
                   Row(
                     children: [
                       _detailChip(Icons.calendar_today, booking['date']),
@@ -196,7 +172,6 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
                     ],
                   ),
 
-                  // Action buttons (only for new bookings)
                   if (isNew) ...[
                     const SizedBox(height: 16),
                     const Divider(),
@@ -208,7 +183,7 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
                             height: 44,
                             child: ElevatedButton(
                               onPressed: () =>
-                                  _updateStatus(index, 'مؤكد'),
+                                  _updateStatus(booking['id'], 'confirmed'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppConstants.success,
                                 foregroundColor: Colors.white,
@@ -231,7 +206,7 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
                             height: 44,
                             child: OutlinedButton(
                               onPressed: () =>
-                                  _updateStatus(index, 'مرفوض'),
+                                  _updateStatus(booking['id'], 'rejected'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppConstants.error,
                                 side: const BorderSide(
@@ -260,8 +235,9 @@ class _PartnerBookingsScreenState extends State<PartnerBookingsScreen> {
           },
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _detailChip(IconData icon, String text) {
     return Container(

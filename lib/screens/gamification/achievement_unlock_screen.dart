@@ -73,7 +73,7 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
       backgroundColor: AppConstants.backgroundDark,
       body: Stack(
         children: [
-          // Radial glow background
+
           Positioned.fill(
             child: AnimatedBuilder(
               animation: _pulseAnimation,
@@ -95,7 +95,6 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
                 children: [
                   const SizedBox(height: 60),
 
-                  // Success Icon
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: ScaleTransition(
@@ -111,7 +110,7 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 32),
 
                   Text(
@@ -123,9 +122,9 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
                       letterSpacing: 4,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 12),
-                  
+
                   Text(
                     widget.unlockedAchievements.isNotEmpty ? 'You Reached a Milestone!' : 'Journey Shared',
                     textAlign: TextAlign.center,
@@ -138,7 +137,6 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
 
                   const SizedBox(height: 48),
 
-                  // XP Reward Box
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: Container(
@@ -186,10 +184,9 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 32),
 
-                  // Achievement Unlock (If applicable)
                   if (widget.unlockedAchievements.isNotEmpty) ...[
                     FadeTransition(
                       opacity: _fadeAnimation,
@@ -223,7 +220,6 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
                     const SizedBox(height: 32),
                   ],
 
-                  // Continue Button
                   FadeTransition(
                     opacity: _fadeAnimation,
                     child: SizedBox(
@@ -259,7 +255,6 @@ class _AchievementUnlockScreenState extends State<AchievementUnlockScreen>
   }
 }
 
-// Custom painter for the radial glow effect
 class _GlowPainter extends CustomPainter {
   final Color color;
   final double scale;
@@ -287,5 +282,3 @@ class _GlowPainter extends CustomPainter {
   bool shouldRepaint(covariant _GlowPainter oldDelegate) =>
       oldDelegate.scale != scale;
 }
-
-// ... Removed unused _MountainPainter class ...

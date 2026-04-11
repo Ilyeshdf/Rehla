@@ -8,15 +8,17 @@ import 'providers/journey_provider.dart';
 import 'providers/feed_provider.dart';
 import 'providers/leaderboard_provider.dart';
 import 'providers/navigation_provider.dart';
-import 'screens/splash_screen.dart';
+import 'providers/guide_provider.dart';
+import 'providers/partner_provider.dart';
+import 'routing/app_router.dart';
+import 'routing/route_names.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Supabase with the project configuration
+
   await Supabase.initialize(
     url: AppConstants.supabaseUrl,
     anonKey: AppConstants.supabaseAnonKey,
@@ -31,6 +33,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FeedProvider()),
         ChangeNotifierProvider(create: (_) => LeaderboardProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
+        ChangeNotifierProvider(create: (_) => GuideProvider()),
+        ChangeNotifierProvider(create: (_) => PartnerProvider()),
       ],
       child: const RehlaApp(),
     ),
@@ -45,9 +49,9 @@ class RehlaApp extends StatelessWidget {
     return MaterialApp(
       title: 'Rihla',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme, // Currently points to darkTheme in our config
+      theme: AppTheme.lightTheme, 
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark, // Standardize on Dark Mode for the premium look
+      themeMode: ThemeMode.light, 
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -58,8 +62,9 @@ class RehlaApp extends StatelessWidget {
         Locale('ar'),
         Locale('fr'),
       ],
-      locale: const Locale('en'), // English first as per Stitch design
-      home: const SplashScreen(),
+      locale: const Locale('en'), 
+      initialRoute: RouteNames.splash,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }

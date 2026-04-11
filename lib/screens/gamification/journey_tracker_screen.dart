@@ -38,15 +38,13 @@ class JourneyTrackerScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Emergency SOS Button (Primary Safety Action)
+
                 _buildSOSButton(),
                 const SizedBox(height: 32),
 
-                // Live Tracking Card
                 _buildLiveTrackingCard(journey),
                 const SizedBox(height: 24),
 
-                // Journey Actions (Camera + End)
                 _buildJourneyActions(context, journey),
                 const SizedBox(height: 32),
 
@@ -62,7 +60,7 @@ class JourneyTrackerScreen extends StatelessWidget {
                 _buildSafetyTool('Verified Guides Near You', Icons.verified_user),
                 _buildSafetyTool('Real-time Safe Zones', Icons.map_outlined),
                 _buildSafetyTool('Check-in with Family', Icons.family_restroom),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
@@ -123,21 +121,21 @@ class JourneyTrackerScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppConstants.liveRed.withValues(alpha: 0.1),
+        color: AppConstants.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: AppConstants.liveRed.withValues(alpha: 0.3), width: 2),
+        border: Border.all(color: AppConstants.error.withValues(alpha: 0.3), width: 2),
       ),
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(color: AppConstants.liveRed, shape: BoxShape.circle),
+            decoration: const BoxDecoration(color: AppConstants.error, shape: BoxShape.circle),
             child: const Icon(Icons.emergency_share, color: Colors.white, size: 40),
           ),
           const SizedBox(height: 16),
           Text(
             'SIGNAL EMERGENCY',
-            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w800, color: AppConstants.liveRed, letterSpacing: 1),
+            style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w800, color: AppConstants.error, letterSpacing: 1),
           ),
           const SizedBox(height: 4),
           Text(
@@ -193,7 +191,7 @@ class JourneyTrackerScreen extends StatelessWidget {
   Widget _buildJourneyActions(BuildContext context, JourneyProvider journey) {
     return Row(
       children: [
-        // Camera Button
+
         Expanded(
           child: _buildActionButton(
             context,
@@ -226,20 +224,20 @@ class JourneyTrackerScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        // End Journey Button
+
         Expanded(
           child: _buildActionButton(
             context,
             'FINISH JOURNEY',
             Icons.stop_circle,
-            AppConstants.liveRed,
+            AppConstants.error,
             () {
               final user = context.read<UserProvider>().currentUser;
               if (user != null) {
                 journey.endJourney(user.id, journey.placeName ?? 'Exploring Algeria');
-                // Switch back to Profile tab
+
                 context.read<NavigationProvider>().setIndex(3);
-                
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Journey completed and saved!')),
                 );
